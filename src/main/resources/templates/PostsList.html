@@ -13,7 +13,7 @@
 <div class="container my-2">
     <h1> Posts List </h1>
 
-    <a th:href="@{/showNewPostsForm}" class="btn btn-primary btn-sm mb-3">Add Posts</a>
+    <a th:href="@{/posts/showNewPostsForm}" class="btn btn-primary btn-sm mb-3">Add Posts</a>
 
     <table border="1" class="table table-striped table-responsive-md">
         <thead>
@@ -22,7 +22,7 @@
                 <th> Excerpt </th>
                 <th> Content </th>
                 <th> Author </th>
-                <th> Published Date </th>
+
             </tr>
         </thead>
         <tbody>
@@ -31,7 +31,7 @@
                 <td th:text="${posts.excerpt}"></td>
                 <td th:text="${posts.content}"></td>
                 <td th:text="${posts.author}"></td>
-                <td th:text="${posts.publishedAt}"></td>
+
                 <td>
                     <a th:href="@{/showFormForUpdate/{id}(id=${posts.id})}" class="btn btn-primary">Update</a>
                     <a th:href="@{/deletePosts/{id}(id=${posts.id})}" class="btn btn-danger">Delete</a>

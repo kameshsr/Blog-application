@@ -1,11 +1,16 @@
 package com.BlogCRUD.Blog.models;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 import javax.persistence.*;
 import java.util.Date;
 
+@Data
 @Entity
+@EqualsAndHashCode(callSuper = true)
 @Table(name="posts")
-public class Posts {
+public class Posts extends BaseEntity{
 
 
     @Id
@@ -29,7 +34,6 @@ public class Posts {
 
     @Column(nullable = false, columnDefinition = "TINYINT(1)")
     private boolean enabled;
-
 
     public int getId() {
         return id;
