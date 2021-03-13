@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Blog</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+</head>
+
+<body>
+
+<div class="container my-2">
+    <h1> Posts List </h1>
+
+    <a th:href="@{/showNewPostsForm}" class="btn btn-primary btn-sm mb-3">Add Posts</a>
+
+    <table border="1" class="table table-striped table-responsive-md">
+        <thead>
+            <tr>
+                <th> Title </th>
+                <th> Excerpt </th>
+                <th> Content </th>
+                <th> Author </th>
+                <th> Published Date </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="posts : ${listPosts}">
+                <td th:text="${posts.title}"></td>
+                <td th:text="${posts.excerpt}"></td>
+                <td th:text="${posts.content}"></td>
+                <td th:text="${posts.author}"></td>
+                <td th:text="${posts.publishedAt}"></td>
+                <td>
+                    <a th:href="@{/showFormForUpdate/{id}(id=${posts.id})}" class="btn btn-primary">Update</a>
+                    <a th:href="@{/deletePosts/{id}(id=${posts.id})}" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+
+</body>
+
+</html>
