@@ -5,6 +5,8 @@ import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Entity
@@ -23,7 +25,8 @@ public class Posts extends BaseEntity{
     @Column(name = "excerpt")
     private String excerpt;
 
-    @Column(name = "content", columnDefinition = "TEXT")
+    @Lob
+    @Column(name = "content", columnDefinition = "LONGTEXT")
     private String content;
 
     @Column(name = "author")
@@ -34,6 +37,12 @@ public class Posts extends BaseEntity{
 
     @Column(nullable = false, columnDefinition = "TINYINT(1)")
     private boolean enabled;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "post_tags",
+            joinColumns = { @JoinColumn(name = "post_id")},
+            inverseJoinColumns = { @JoinColumn (name = "tag_id")})
+    private Set<Tag> tags = new HashSet<>();
 
     public int getId() {
         return id;
@@ -89,5 +98,12 @@ public class Posts extends BaseEntity{
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public Set<Tag> getTags() {
+        return tags;
+    }
+    public void setTags(Set<Tag> tags) {
+        this.tags = tags;
     }
 }

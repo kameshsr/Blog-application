@@ -24,7 +24,7 @@ public class PostsController {
     public String showNewPostsForm(Model model) {
         Posts posts = new Posts();
         model.addAttribute("posts", posts);
-        return "new_posts";
+        return "NewPosts";
     }
 
     @PostMapping("/savePosts")
@@ -37,7 +37,7 @@ public class PostsController {
     public String showFormForUpdate(@PathVariable(value = "id") int id, Model model){
         Posts posts = postsService.getPostsById(id);
         model.addAttribute("posts", posts);
-        return "update_posts";
+        return "UpdatePosts";
     }
 
     @GetMapping("/deletePosts/{id}")
