@@ -12,7 +12,7 @@ import java.util.Set;
 @Entity
 @EqualsAndHashCode(callSuper = true)
 @Table(name="posts")
-public class Posts extends BaseEntity{
+public class Post extends BaseModel{
 
 
     @Id
@@ -36,9 +36,9 @@ public class Posts extends BaseEntity{
     private Date publishedAt;
 
     @Column(nullable = false, columnDefinition = "TINYINT(1)")
-    private boolean enabled;
+    private boolean isPublished = false;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinTable(name = "post_tags",
             joinColumns = { @JoinColumn(name = "post_id")},
             inverseJoinColumns = { @JoinColumn (name = "tag_id")})
@@ -92,12 +92,12 @@ public class Posts extends BaseEntity{
         this.publishedAt = publishedAt;
     }
 
-    public boolean isEnabled() {
-        return enabled;
+    public boolean isPublished() {
+        return isPublished;
     }
 
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
+    public void setPublished(boolean published) {
+        this.isPublished = published;
     }
 
     public Set<Tag> getTags() {
@@ -105,5 +105,13 @@ public class Posts extends BaseEntity{
     }
     public void setTags(Set<Tag> tags) {
         this.tags = tags;
+    }
+    public boolean hasTags(Tag tag) {
+        for (Tag postTag: getTags()) {
+            if (postTag.getId() == tag.getId()) {
+                return true;
+            }
+        }
+        return false;
     }
 }

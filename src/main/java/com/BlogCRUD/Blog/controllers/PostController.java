@@ -1,7 +1,7 @@
 package com.BlogCRUD.Blog.controllers;
 
-import com.BlogCRUD.Blog.models.Posts;
-import com.BlogCRUD.Blog.services.PostsService;
+import com.BlogCRUD.Blog.models.Post;
+import com.BlogCRUD.Blog.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,33 +9,39 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/posts")
-public class PostsController {
+public class PostController {
 
     @Autowired
-    private PostsService postsService;
+    private PostService postsService;
 
     @GetMapping("/list")
     public String viewHomePage(Model model) {
-        model.addAttribute("listPosts", postsService.getAllPosts());
+        model.addAttribute("listPosts", postsService.getAllPublishedPosts());
         return "PostsList";
+    }
+
+    @GetMapping("/listUnPublishedPosts")
+    public String listUnPublishedPosts(Model model) {
+        model.addAttribute("listPosts", postsService.getAllUnPublishedPosts());
+        return "UnPublishedPosts";
     }
 
     @GetMapping("/showNewPostsForm")
     public String showNewPostsForm(Model model) {
-        Posts posts = new Posts();
+        Post posts = new Post();
         model.addAttribute("posts", posts);
         return "NewPosts";
     }
 
     @PostMapping("/savePosts")
-    public String savePosts(@ModelAttribute("posts") Posts posts) {
+    public String savePosts(@ModelAttribute("posts") Post posts) {
         postsService.savePosts(posts);
-        return "redirect:/";
+        return "UnPublishedPosts";
     }
 
     @GetMapping("/showFormForUpdate/{id}")
     public String showFormForUpdate(@PathVariable(value = "id") int id, Model model){
-        Posts posts = postsService.getPostsById(id);
+        Post posts = postsService.getPostsById(id);
         model.addAttribute("posts", posts);
         return "UpdatePosts";
     }
