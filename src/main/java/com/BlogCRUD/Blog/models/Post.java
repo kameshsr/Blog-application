@@ -2,8 +2,10 @@ package com.BlogCRUD.Blog.models;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -11,8 +13,8 @@ import java.util.Set;
 @Data
 @Entity
 @EqualsAndHashCode(callSuper = true)
-@Table(name="posts")
-public class Post extends BaseModel{
+@Table(name = "posts")
+public class Post extends BaseModel {
 
 
     @Id
@@ -33,16 +35,21 @@ public class Post extends BaseModel{
     private String author;
 
     @Column(name = "published_at")
-    private Date publishedAt;
+    @CreationTimestamp
+    private LocalDateTime publishedAt;
 
     @Column(nullable = false, columnDefinition = "TINYINT(1)")
-    private boolean isPublished = false;
+    private boolean isPublished = true;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinTable(name = "post_tags",
-            joinColumns = { @JoinColumn(name = "post_id")},
-            inverseJoinColumns = { @JoinColumn (name = "tag_id")})
+            joinColumns = {@JoinColumn(name = "post_id")},
+            inverseJoinColumns = {@JoinColumn(name = "tag_id")})
     private Set<Tag> tags = new HashSet<>();
+
+
+    @Column(name = "tag")
+    private String tag;
 
     public int getId() {
         return id;
@@ -84,11 +91,11 @@ public class Post extends BaseModel{
         this.author = author;
     }
 
-    public Date getPublishedAt() {
+    public LocalDateTime getPublishedAt() {
         return publishedAt;
     }
 
-    public void setPublishedAt(Date publishedAt) {
+    public void setPublishedAt(LocalDateTime publishedAt) {
         this.publishedAt = publishedAt;
     }
 
@@ -100,14 +107,24 @@ public class Post extends BaseModel{
         this.isPublished = published;
     }
 
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
     public Set<Tag> getTags() {
         return tags;
     }
+
     public void setTags(Set<Tag> tags) {
         this.tags = tags;
     }
+
     public boolean hasTags(Post tag) {
-        for (Tag postTag: getTags()) {
+        for (Tag postTag : getTags()) {
             if (postTag.getId() == tag.getId()) {
                 return true;
             }

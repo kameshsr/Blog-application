@@ -70,7 +70,7 @@ public class PostController {
     public String savePosts(@ModelAttribute("posts") Post posts) {
         postsService.savePosts(posts);
 
-        return "redirect:/posts/listUnPublishedPosts";
+        return "redirect:/posts/list";
     }
 
     @PostMapping("/saveTag/{id}")
