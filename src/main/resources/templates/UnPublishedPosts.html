@@ -22,7 +22,7 @@
             <th> Excerpt </th>
             <th> Content </th>
             <th> Author </th>
-
+            <th>Tag</th>
         </tr>
         </thead>
         <tbody>
@@ -31,9 +31,19 @@
             <td th:text="${posts.excerpt}"></td>
             <td th:text="${posts.content}"></td>
             <td th:text="${posts.author}"></td>
+            <td th:text="${posts.tags}"></td>
+            <td>
+        <span th:each="tag : ${posts.tags}">
+        <span th:text="${tag.name}"/>
+        </span>
+            </td>
+            <td>
+                <a th:href="@{/posts/addTag/{id}(id=${posts.id})}" class="btn btn-success btn-xs">Add Tag</a>
+
+            </td>
 
             <td>
-                <a th:href="@{/posts/showFormForUpdate/{id}(id=${posts.id})}" class="btn btn-primary">Update</a>
+
                 <a th:href="@{/posts/deletePosts/{id}(id=${posts.id})}" class="btn btn-danger">Delete</a>
             </td>
         </tr>

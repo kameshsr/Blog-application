@@ -1,7 +1,9 @@
 package com.BlogCRUD.Blog.services;
 
 import com.BlogCRUD.Blog.models.Post;
+import com.BlogCRUD.Blog.models.Tag;
 import com.BlogCRUD.Blog.repository.PostRepository;
+import com.BlogCRUD.Blog.repository.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,10 +11,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class PostServiceImplementation implements PostService {
+public class PostTagServiceImplementation implements PostService, TagService{
 
     @Autowired
     private PostRepository postsRepository;
+
+    @Autowired
+    private TagRepository tagRepository;
 
     @Override
     public List <Post> getAllPublishedPosts(){
@@ -44,5 +49,20 @@ public class PostServiceImplementation implements PostService {
     @Override
     public void deletePostsById(int id) {
         this.postsRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Tag> findAll() {
+        return tagRepository.findAll();
+    }
+
+    @Override
+    public void saveTags(Tag tags) {
+        this.tagRepository.save(tags);
+    }
+
+    @Override
+    public Post findOne(int studentId) {
+        return null;
     }
 }

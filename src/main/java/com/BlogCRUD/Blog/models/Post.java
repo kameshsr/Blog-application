@@ -106,7 +106,7 @@ public class Post extends BaseModel{
     public void setTags(Set<Tag> tags) {
         this.tags = tags;
     }
-    public boolean hasTags(Tag tag) {
+    public boolean hasTags(Post tag) {
         for (Tag postTag: getTags()) {
             if (postTag.getId() == tag.getId()) {
                 return true;

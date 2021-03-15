@@ -1,7 +1,9 @@
 package com.BlogCRUD.Blog.controllers;
 
 import com.BlogCRUD.Blog.models.Post;
+import com.BlogCRUD.Blog.models.Tag;
 import com.BlogCRUD.Blog.services.PostService;
+import com.BlogCRUD.Blog.services.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +16,9 @@ public class PostController {
     @Autowired
     private PostService postsService;
 
+    @Autowired
+    private TagService tagService;
+
     @GetMapping("/list")
     public String viewHomePage(Model model) {
         model.addAttribute("listPosts", postsService.getAllPublishedPosts());
@@ -24,6 +29,7 @@ public class PostController {
     public String listUnPublishedPosts(Model model) {
         model.addAttribute("listPosts", postsService.getAllUnPublishedPosts());
         return "UnPublishedPosts";
+
     }
 
     @GetMapping("/showNewPostsForm")
@@ -32,11 +38,48 @@ public class PostController {
         model.addAttribute("posts", posts);
         return "NewPosts";
     }
+/*
+    @RequestMapping(value="/student/{id}/courses", method=RequestMethod.GET)
+    public String studentsAddCourse(@PathVariable Long id, @RequestParam Long courseId, Model model) {
+        Course course = crepository.findOne(courseId);
+        Student student = repository.findOne(id);
+
+        if (student != null) {
+            if (!student.hasCourse(course)) {
+                student.getCourses().add(course);
+            }
+            repository.save(student);
+            model.addAttribute("student", crepository.findOne(id));
+            model.addAttribute("courses", crepository.findAll());
+            return "redirect:/students";
+        }
+
+        return "redirect:/students";
+    }*/
+    @GetMapping("/addTag/{id}")
+    public String addTag(@PathVariable("id") int postId, Model model){
+        model.addAttribute("tag", tagService.findAll());
+        model.addAttribute("posts", postsService.findOne(postId));
+        Tag tags = new Tag();
+        model.addAttribute("tags", tags);
+        return "AddPostTag";
+    }
+
 
     @PostMapping("/savePosts")
     public String savePosts(@ModelAttribute("posts") Post posts) {
         postsService.savePosts(posts);
-        return "UnPublishedPosts";
+
+        return "redirect:/posts/listUnPublishedPosts";
+    }
+
+    @PostMapping("/saveTag/{id}")
+    public String saveTags(@PathVariable("id") int postId, @ModelAttribute("tags") Tag tags) {
+        Post currentPosts = postsService.getPostsById(postId);
+        currentPosts.getTags().add(tags);
+        tagService.saveTags(tags);
+
+        return "redirect:/posts/listUnPublishedPosts";
     }
 
     @GetMapping("/showFormForUpdate/{id}")
