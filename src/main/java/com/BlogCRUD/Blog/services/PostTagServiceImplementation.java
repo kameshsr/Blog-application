@@ -5,6 +5,9 @@ import com.BlogCRUD.Blog.models.Tag;
 import com.BlogCRUD.Blog.repository.PostRepository;
 import com.BlogCRUD.Blog.repository.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -49,6 +52,13 @@ public class PostTagServiceImplementation implements PostService, TagService{
     @Override
     public void deletePostsById(int id) {
         this.postsRepository.deleteById(id);
+    }
+
+    @Override
+    public Page<Post> findPaginated(int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
+        return this.postsRepository.findAll(pageable);
+
     }
 
     @Override

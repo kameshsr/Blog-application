@@ -5,9 +5,12 @@ import com.BlogCRUD.Blog.models.Tag;
 import com.BlogCRUD.Blog.services.PostService;
 import com.BlogCRUD.Blog.services.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/posts")
@@ -21,8 +24,8 @@ public class PostController {
 
     @GetMapping("/list")
     public String viewHomePage(Model model) {
-        model.addAttribute("listPosts", postsService.getAllPublishedPosts());
-        return "PostsList";
+        //model.addAttribute("listPosts", postsService.getAllPublishedPosts());
+        return findPaginated(1, model);
     }
 
     @GetMapping("/listUnPublishedPosts")
@@ -93,6 +96,20 @@ public class PostController {
     public String deletePosts(@PathVariable(value = "id") int id) {
         this.postsService.deletePostsById(id);
         return "redirect:/";
+    }
+
+    @GetMapping("/page/{pageNo}")
+    public String findPaginated(@PathVariable(value = "pageNo") int pageNo, Model model) {
+        int pageSize = 10;
+
+        Page< Post > page = postsService.findPaginated(pageNo, pageSize);
+        List< Post > listPost = page.getContent();
+
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("totalItems", page.getTotalElements());
+        model.addAttribute("listPost", listPost);
+        return "PostsList";
     }
 
 
