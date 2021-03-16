@@ -2,6 +2,8 @@ package com.BlogCRUD.Blog.controllers;
 
 import com.BlogCRUD.Blog.models.Post;
 import com.BlogCRUD.Blog.models.Tag;
+import com.BlogCRUD.Blog.models.User;
+import com.BlogCRUD.Blog.repository.UserRepository;
 import com.BlogCRUD.Blog.services.PostService;
 import com.BlogCRUD.Blog.services.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/posts")
+//@RequestMapping("/posts")
 public class PostController {
 
     @Autowired
@@ -22,8 +24,37 @@ public class PostController {
     @Autowired
     private TagService tagService;
 
-    @GetMapping("/list")
-    public String viewHomePage(Model model) {
+    @Autowired
+    private UserRepository userRepository;
+
+    @GetMapping("/")
+    public String viewHomePage(){
+        return "index";
+    }
+
+    @GetMapping("/register")
+    public String showRegistrationForm(Model model) {
+        model.addAttribute("user", new User());
+
+        return "signupForm";
+    }
+
+    @PostMapping("/process_register")
+    public String processRegister(User user) {
+
+        userRepository.save(user);
+
+        return "RegisterSuccess";
+    }
+
+    @GetMapping("/login")
+    public String login(Model model){
+        model.addAttribute("user", new User());
+        return "login";
+    }
+
+    @GetMapping("/posts/list")
+    public String viewPostsList(Model model) {
         //model.addAttribute("listPosts", postsService.getAllPublishedPosts());
         return findPaginated(1, model);
     }
@@ -35,7 +66,7 @@ public class PostController {
 
     }
 
-    @GetMapping("/showNewPostsForm")
+    @GetMapping("/posts/showNewPostsForm")
     public String showNewPostsForm(Model model) {
         Post posts = new Post();
         model.addAttribute("posts", posts);
@@ -59,7 +90,7 @@ public class PostController {
 
         return "redirect:/students";
     }*/
-    @GetMapping("/addTag/{id}")
+    @GetMapping("/posts/addTag/{id}")
     public String addTag(@PathVariable("id") int postId, Model model){
         model.addAttribute("tag", tagService.findAll());
         model.addAttribute("posts", postsService.findOne(postId));
@@ -69,14 +100,14 @@ public class PostController {
     }
 
 
-    @PostMapping("/savePosts")
+    @PostMapping("/posts/savePosts")
     public String savePosts(@ModelAttribute("posts") Post posts) {
         postsService.savePosts(posts);
 
         return "redirect:/posts/list";
     }
 
-    @PostMapping("/saveTag/{id}")
+    @PostMapping("/posts/saveTag/{id}")
     public String saveTags(@PathVariable("id") int postId, @ModelAttribute("tags") Tag tags) {
         Post currentPosts = postsService.getPostsById(postId);
         currentPosts.getTags().add(tags);
@@ -85,22 +116,22 @@ public class PostController {
         return "redirect:/posts/listUnPublishedPosts";
     }
 
-    @GetMapping("/showFormForUpdate/{id}")
+    @GetMapping("/posts/showFormForUpdate/{id}")
     public String showFormForUpdate(@PathVariable(value = "id") int id, Model model){
         Post posts = postsService.getPostsById(id);
         model.addAttribute("posts", posts);
         return "UpdatePosts";
     }
 
-    @GetMapping("/deletePosts/{id}")
+    @GetMapping("/posts/deletePosts/{id}")
     public String deletePosts(@PathVariable(value = "id") int id) {
         this.postsService.deletePostsById(id);
         return "redirect:/";
     }
 
-    @GetMapping("/page/{pageNo}")
+    @GetMapping("/posts/page/{pageNo}")
     public String findPaginated(@PathVariable(value = "pageNo") int pageNo, Model model) {
-        int pageSize = 10;
+        int pageSize = 1;
 
         Page< Post > page = postsService.findPaginated(pageNo, pageSize);
         List< Post > listPost = page.getContent();
