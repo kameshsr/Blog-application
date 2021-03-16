@@ -146,7 +146,7 @@ public class PostController {
                                 @RequestParam("sortField") String sortField,
                                 @RequestParam("sortDir") String sortDir,
                                 Model model) {
-        int pageSize = 5;
+        int pageSize = 2;
 
         Page < Post > page = postsService.findPaginated(pageNo, pageSize, sortField, sortDir);
         List < Post > listPosts = page.getContent();
@@ -157,7 +157,7 @@ public class PostController {
 
         model.addAttribute("sortField", sortField);
         model.addAttribute("sortDir", sortDir);
-        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "asc" : "asc");
+        model.addAttribute("reverseSortDir", sortDir.equals("desc") ? "asc" : "desc");
 
         model.addAttribute("listPost", listPosts);
         return "PostsList";
