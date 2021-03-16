@@ -6,6 +6,9 @@ import com.BlogCRUD.Blog.models.Tag;
 import java.util.List;
 
 public interface TagService {
+
+
     List<Tag> findAll();
-    void saveTags(Tag tags);
+
+    void saveTags(Tag tags) ;
 }

@@ -26,6 +26,9 @@
             </tr>
         </thead>
         <tbody>
+
+
+
             <tr th:each="posts : ${listPost}">
                 <td th:text="${posts.title}"></td>
                 <td th:text="${posts.excerpt}"></td>
@@ -33,6 +36,7 @@
                 <td th:text="${posts.author}"></td>
 
                 <td>
+                    <a th:href="@{/posts/{id}(id=${posts.id})}" class="btn btn-primary"> View Post</a>
                     <a th:href="@{/posts/showFormForUpdate/{id}(id=${posts.id})}" class="btn btn-primary">Update</a>
                     <a th:href="@{/posts/deletePosts/{id}(id=${posts.id})}" class="btn btn-danger">Delete</a>
                 </td>
@@ -40,7 +44,7 @@
         </tbody>
     </table>
 
-    <div th:if="${totalPages > 1}">
+    <div th:if="${totalPages > 0}">
         <div class="row col-sm-10">
             <div class="col-sm-2">
                 Total Rows: [[${totalItems}]]
