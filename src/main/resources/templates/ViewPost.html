@@ -69,8 +69,10 @@ body {
     <div class="leftcolumn">
         <div class="card">
             <h2 th:text="${posts.title}">Title</h2>
-            <p>Author</p>
-            <p> co.</p>
+            <p th:text="${posts.author}">Author</p>
+            <p th:text="${posts.publishedAt}">Published At</p>
+            <p th:text="${posts.content}">Content</p>
+            <p th:text="${posts.tag}">tag</p>
         </div>
 
     </div>

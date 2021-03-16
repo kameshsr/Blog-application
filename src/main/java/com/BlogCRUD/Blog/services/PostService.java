@@ -13,7 +13,7 @@ public interface PostService {
     void savePosts(Post posts);
     Post getPostsById(int id);
     void deletePostsById(int id);
-    Page< Post > findPaginated(int pageNo, int pageSize);
+    Page< Post > findPaginated(int pageNo, int pageSize, String sortField, String sortDirection);
 
 
     Post findOne(int studentId);

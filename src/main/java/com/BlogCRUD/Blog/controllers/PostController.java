@@ -66,7 +66,7 @@ public class PostController {
     @GetMapping("/posts/list")
     public String viewPostsList(Model model) {
         //model.addAttribute("listPosts", postsService.getAllPublishedPosts());
-        return findPaginated(1, model);
+        return findPaginated(1, "publishedAt", "asc", model);
     }
 
     @GetMapping("/listUnPublishedPosts")
@@ -142,16 +142,24 @@ public class PostController {
     }
 
     @GetMapping("/posts/page/{pageNo}")
-    public String findPaginated(@PathVariable(value = "pageNo") int pageNo, Model model) {
-        int pageSize = 10;
+    public String findPaginated(@PathVariable(value = "pageNo") int pageNo,
+                                @RequestParam("sortField") String sortField,
+                                @RequestParam("sortDir") String sortDir,
+                                Model model) {
+        int pageSize = 5;
 
-        Page< Post > page = postsService.findPaginated(pageNo, pageSize);
-        List< Post > listPost = page.getContent();
+        Page < Post > page = postsService.findPaginated(pageNo, pageSize, sortField, sortDir);
+        List < Post > listPosts = page.getContent();
 
         model.addAttribute("currentPage", pageNo);
         model.addAttribute("totalPages", page.getTotalPages());
         model.addAttribute("totalItems", page.getTotalElements());
-        model.addAttribute("listPost", listPost);
+
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("sortDir", sortDir);
+        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "asc" : "asc");
+
+        model.addAttribute("listPost", listPosts);
         return "PostsList";
     }
 
