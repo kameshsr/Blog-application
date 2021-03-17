@@ -3,12 +3,12 @@ package com.BlogCRUD.Blog.models;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Data
 @Entity
@@ -46,6 +46,12 @@ public class Post extends BaseModel {
             joinColumns = {@JoinColumn(name = "post_id")},
             inverseJoinColumns = {@JoinColumn(name = "tag_id")})
     private Set<Tag> tags = new HashSet<>();
+
+
+    @OneToMany(mappedBy="post",
+            cascade= {CascadeType.REMOVE})
+
+    List<Comment> comments = new ArrayList<>();
 
 
     @Column(name = "tag")
@@ -130,5 +136,13 @@ public class Post extends BaseModel {
             }
         }
         return false;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 }

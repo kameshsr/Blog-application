@@ -1,8 +1,10 @@
 package com.BlogCRUD.Blog.controllers;
 
+import com.BlogCRUD.Blog.models.Comment;
 import com.BlogCRUD.Blog.models.Post;
 import com.BlogCRUD.Blog.models.Tag;
 import com.BlogCRUD.Blog.models.User;
+import com.BlogCRUD.Blog.repository.CommentRepository;
 import com.BlogCRUD.Blog.repository.TagRepository;
 import com.BlogCRUD.Blog.repository.UserRepository;
 import com.BlogCRUD.Blog.services.PostService;
@@ -28,6 +30,9 @@ public class PostController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private CommentRepository commentRepository;
 
     @GetMapping("/")
     public String viewHomePage(){
@@ -95,9 +100,27 @@ public class PostController {
     @GetMapping("/posts/{id}")
     public String viewPost(@PathVariable("id")int postId, Model model){
         model.addAttribute("posts", postsService.getPostsById(postId));
+        model.addAttribute("comments", commentRepository.findByPostId(postId));
+
         return "ViewPost";
     }
 
+
+    @PostMapping("/posts/addComment/{id}/comment")
+    public String addComments(@PathVariable("id")int postId, @ModelAttribute("newComment") Comment newComment) {
+
+
+
+        Post currentPosts = postsService.getPostsById(postId);
+        newComment.setPost(currentPosts);
+        commentRepository.save(newComment);
+
+        currentPosts.getComments().add(newComment);
+
+        postsService.savePosts(currentPosts);
+        //model.addAttribute("posts", postsService.getPostsById(postId));
+        return "redirect:/posts/{id}";
+    }
 
     @PostMapping("/posts/savePosts")
     public String savePosts(@ModelAttribute("posts") Post posts) {
@@ -146,7 +169,7 @@ public class PostController {
                                 @RequestParam("sortField") String sortField,
                                 @RequestParam("sortDir") String sortDir,
                                 Model model) {
-        int pageSize = 2;
+        int pageSize = 10;
 
         Page < Post > page = postsService.findPaginated(pageNo, pageSize, sortField, sortDir);
         List < Post > listPosts = page.getContent();
@@ -161,6 +184,24 @@ public class PostController {
 
         model.addAttribute("listPost", listPosts);
         return "PostsList";
+    }
+
+    @RequestMapping(value = "posts/addComment/{id}", method = RequestMethod.GET)
+    public String addComment(@PathVariable("id") int postsId, Model model){
+        model.addAttribute("comment", commentRepository.findAll());
+
+        Comment newComment = new Comment();
+        model.addAttribute("newComment", newComment);
+        model.addAttribute("posts", postsService.getPostsById(postsId));
+        return "AddComment";
+    }
+
+    @RequestMapping(value = "/posts/{postsId}/updateComments/{commentId}", method = RequestMethod.GET)
+    public String updateComment(@PathVariable("postsId") int postsId,
+                                @PathVariable("commentId") int commentId ,Model model){
+        model.addAttribute("posts", postsService.getPostsById(postsId));
+        model.addAttribute("newComment", commentRepository.findById(commentId));
+        return "AddComment";
     }
 
 

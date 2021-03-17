@@ -59,10 +59,10 @@ body {
     padding: 0;
   }
 }
-</style>
+
+    </style>
 </head>
 <body>
-
 
 
 <div class="row">
@@ -73,12 +73,23 @@ body {
             <p th:text="${posts.publishedAt}">Published At</p>
             <p th:text="${posts.content}">Content</p>
             <p th:text="${posts.tag}">tag</p>
+
+            <p>Comment</p>
+
+            <span th:each="newComments:${comments}">
+					<span th:text="${newComments.name}"/><br>
+                <span th:text="${newComments.email}"/><br>
+                <span th:text="${newComments.comment}"/>
+
+                <a th:href="@{/posts/{postsId}/updateComments/{commentId}(postsId=${posts.id}, commentId=${newComments.id})}" class="btn btn-primary">Update Comment</a>
+
+				</span>
+            <a th:href="@{/posts/addComment/{id}(id=${posts.id})}" class="btn btn-success btn-xs">Add Comment</a>
         </div>
 
     </div>
 
 </div>
-
 
 
 </body>
