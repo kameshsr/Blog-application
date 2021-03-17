@@ -106,11 +106,31 @@ public class PostController {
         return "ViewPost";
     }
 
+/*
+    @RequestMapping("/posts/addComment/{postsId}/comment")
+    public String addComments(@PathVariable("postsId")int postId,@ModelAttribute("newComment") Comment newComment, Model model) {
+
+        Post currentPosts = postsService.getPostsById(postId);
+        List<Comment> comment1 = currentPosts.getComments();
+        //Comment comment = currentPosts.getComments();
+        System.out.println(comment1);
+
+        if(currentPosts != null){
+            if(comment1.contains(newComment)) {
+                currentPosts.getComments().add(newComment);
+            }
+            currentPosts.getComments().add(newComment);
+            postsService.savePosts(currentPosts);
+            model.addAttribute("posts", postsService.getPostsById(postId));
+            model.addAttribute("comments", commentRepository.findAll());
+            return "redirect:/posts/{postsId}";
+
+        }
+        return "redirect:/posts/{postsId}";
+    }*/
 
     @RequestMapping("/posts/addComment/{postsId}/comment")
     public String addComments(@PathVariable("postsId")int postId, @ModelAttribute("newComment") Comment newComment) {
-
-
 
         Post currentPosts = postsService.getPostsById(postId);
         newComment.setPost(currentPosts);

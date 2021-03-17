@@ -68,6 +68,7 @@ body {
 <div class="row">
     <div class="leftcolumn">
         <div class="card">
+            <a th:href="@{/posts/list}"> Back to Blog List</a>
             <h2 th:text="${posts.title}">Title</h2>
             <p th:text="${posts.author}">Author</p>
             <p th:text="${posts.publishedAt}">Published At</p>

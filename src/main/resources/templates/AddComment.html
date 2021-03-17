@@ -11,8 +11,8 @@
 <div class="container">
     <h1>New Comment</h1>
     <hr>
-    <form action="#" th:action="@{/posts/addComment/{id}/comment(id=${posts.id})}" th:object="${newComment}" >
-
+    <form action="#" th:action="@{/posts/addComment/{id}/comment(id=${posts.id})}" th:object="${newComment}" method="get">
+        <input type="hidden" th:field="*{id}" />
         <input type="text" th:field="*{name}" placeholder="Name" class="form-control mb-4 col-4" required>
         <input type="text" th:field="*{email}" placeholder="Email" class="form-control mb-4 col-4" required>
 

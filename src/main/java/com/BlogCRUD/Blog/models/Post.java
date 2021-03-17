@@ -145,4 +145,13 @@ public class Post extends BaseModel {
     public void setComments(List<Comment> comments) {
         this.comments = comments;
     }
+
+    public boolean hasComments(Comment comment){
+        for(Comment comment1: getComments()){
+            if(comment1.getId()==comment.getId()){
+                return true;
+            }
+        }
+        return false;
+    }
 }
