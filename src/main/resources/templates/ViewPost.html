@@ -79,10 +79,12 @@ body {
             <span th:each="newComments:${comments}">
 					<span th:text="${newComments.name}"/><br>
                 <span th:text="${newComments.email}"/><br>
-                <span th:text="${newComments.comment}"/>
+                <span th:text="${newComments.comment}"/><br>
 
                 <a th:href="@{/posts/{postsId}/updateComments/{commentId}(postsId=${posts.id}, commentId=${newComments.id})}" class="btn btn-primary">Update Comment</a>
-
+                <br>
+                <a th:href="@{/posts/{postsId}/deleteComments/{commentId}(postsId=${posts.id}, commentId=${newComments.id})}" class="btn btn-primary">Delete Comment</a>
+                <br>
 				</span>
             <a th:href="@{/posts/addComment/{id}(id=${posts.id})}" class="btn btn-success btn-xs">Add Comment</a>
         </div>

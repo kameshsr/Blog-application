@@ -1,5 +1,8 @@
 package com.BlogCRUD.Blog.models;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 
 @Entity
@@ -15,7 +18,8 @@ public class Comment extends BaseModel{
 
     @ManyToOne(cascade= {CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinColumn(name="posts_id")
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name="posts_id", nullable = true)
     private Post post;
 
     public Comment() {

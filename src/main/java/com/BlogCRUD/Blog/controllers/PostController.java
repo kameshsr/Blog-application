@@ -119,7 +119,7 @@ public class PostController {
 
         postsService.savePosts(currentPosts);
         //model.addAttribute("posts", postsService.getPostsById(postId));
-        return "redirect:/posts/{id}";
+        return "redirect:/posts/list";
     }
 
     @PostMapping("/posts/savePosts")
@@ -161,7 +161,7 @@ public class PostController {
     @GetMapping("/posts/deletePosts/{id}")
     public String deletePosts(@PathVariable(value = "id") int id) {
         this.postsService.deletePostsById(id);
-        return "redirect:/";
+        return "redirect:/posts/list";
     }
 
     @GetMapping("/posts/page/{pageNo}")
@@ -202,6 +202,13 @@ public class PostController {
         model.addAttribute("posts", postsService.getPostsById(postsId));
         model.addAttribute("newComment", commentRepository.findById(commentId));
         return "AddComment";
+    }
+
+    @RequestMapping(value = "/posts/{postsId}/deleteComments/{commentId}", method = RequestMethod.GET)
+    public String deleteComment(@PathVariable("postsId") int postsId,
+                                @PathVariable("commentId") int commentId ,Model model){
+        commentRepository.deleteById(commentId);
+        return "redirect:/posts/{postsId}";
     }
 
 
