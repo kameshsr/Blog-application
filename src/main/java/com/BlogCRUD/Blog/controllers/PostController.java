@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 //@RequestMapping("/posts")
@@ -106,8 +107,8 @@ public class PostController {
     }
 
 
-    @PostMapping("/posts/addComment/{id}/comment")
-    public String addComments(@PathVariable("id")int postId, @ModelAttribute("newComment") Comment newComment) {
+    @RequestMapping("/posts/addComment/{postsId}/comment")
+    public String addComments(@PathVariable("postsId")int postId, @ModelAttribute("newComment") Comment newComment) {
 
 
 
@@ -119,7 +120,7 @@ public class PostController {
 
         postsService.savePosts(currentPosts);
         //model.addAttribute("posts", postsService.getPostsById(postId));
-        return "redirect:/posts/list";
+        return "redirect:/posts/{postsId}";
     }
 
     @PostMapping("/posts/savePosts")
@@ -207,7 +208,9 @@ public class PostController {
     @RequestMapping(value = "/posts/{postsId}/deleteComments/{commentId}", method = RequestMethod.GET)
     public String deleteComment(@PathVariable("postsId") int postsId,
                                 @PathVariable("commentId") int commentId ,Model model){
-        commentRepository.deleteById(commentId);
+        Optional<Comment> comment = commentRepository.findById(commentId);
+        this.commentRepository.deleteById(commentId);
+
         return "redirect:/posts/{postsId}";
     }
 

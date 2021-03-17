@@ -16,8 +16,7 @@ public class Comment extends BaseModel{
     private String email;
     private String comment;
 
-    @ManyToOne(cascade= {CascadeType.PERSIST, CascadeType.MERGE,
-            CascadeType.DETACH, CascadeType.REFRESH})
+    @ManyToOne(cascade= {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @NotFound(action = NotFoundAction.IGNORE)
     @JoinColumn(name="posts_id", nullable = true)
     private Post post;

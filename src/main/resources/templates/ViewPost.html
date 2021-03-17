@@ -86,7 +86,7 @@ body {
                 <a th:href="@{/posts/{postsId}/deleteComments/{commentId}(postsId=${posts.id}, commentId=${newComments.id})}" class="btn btn-primary">Delete Comment</a>
                 <br>
 				</span>
-            <a th:href="@{/posts/addComment/{id}(id=${posts.id})}" class="btn btn-success btn-xs">Add Comment</a>
+            <a th:href="@{/posts/addComment/{postsId}(postsId=${posts.id})}" class="btn btn-success btn-xs">Add Comment</a>
         </div>
 
     </div>
