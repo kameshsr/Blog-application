@@ -171,7 +171,7 @@ public class PostController {
                                 @RequestParam("sortField") String sortField,
                                 @RequestParam("sortDir") String sortDir,
                                 Model model) {
-        int pageSize = 1;
+        int pageSize = 10;
 
         Page < Post > page = postsService.findPaginated(pageNo, pageSize, sortField, sortDir);
         List < Post > listPosts = page.getContent();
@@ -224,6 +224,4 @@ public class PostController {
 
         return "redirect:/posts/{postsId}";
     }
-
-
 }
