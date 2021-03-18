@@ -12,6 +12,7 @@ import com.BlogCRUD.Blog.services.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.metrics.StartupStep;
 import org.springframework.data.domain.Page;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,8 @@ import java.util.Optional;
 @Controller
 //@RequestMapping("/posts")
 public class PostController {
+
+    public String keyword1=null;
 
     @Autowired
     private PostService postsService;
@@ -70,8 +73,10 @@ public class PostController {
     }
 
     @GetMapping("/posts/list")
-    public String viewPostsList(Model model) {
-        //model.addAttribute("listPosts", postsService.getAllPublishedPosts());
+    public String viewPostsList(Model model, @Param("keyword") String keyword) {
+        keyword1=keyword;
+        List<Post> listPosts = postsService.listAll(keyword);
+        model.addAttribute(("listPosts"), listPosts);
         return findPaginated(1, "publishedAt", "asc", model);
     }
 
@@ -105,30 +110,6 @@ public class PostController {
 
         return "ViewPost";
     }
-
-/*
-    @RequestMapping("/posts/addComment/{postsId}/comment")
-    public String addComments(@PathVariable("postsId")int postId,@ModelAttribute("newComment") Comment newComment, Model model) {
-
-        Post currentPosts = postsService.getPostsById(postId);
-        List<Comment> comment1 = currentPosts.getComments();
-        //Comment comment = currentPosts.getComments();
-        System.out.println(comment1);
-
-        if(currentPosts != null){
-            if(comment1.contains(newComment)) {
-                currentPosts.getComments().add(newComment);
-            }
-            currentPosts.getComments().add(newComment);
-            postsService.savePosts(currentPosts);
-            model.addAttribute("posts", postsService.getPostsById(postId));
-            model.addAttribute("comments", commentRepository.findAll());
-            return "redirect:/posts/{postsId}";
-
-        }
-        return "redirect:/posts/{postsId}";
-    }*/
-
     @RequestMapping("/posts/addComment/{postsId}/comment")
     public String addComments(@PathVariable("postsId")int postId, @ModelAttribute("newComment") Comment newComment) {
 
@@ -190,7 +171,7 @@ public class PostController {
                                 @RequestParam("sortField") String sortField,
                                 @RequestParam("sortDir") String sortDir,
                                 Model model) {
-        int pageSize = 10;
+        int pageSize = 1;
 
         Page < Post > page = postsService.findPaginated(pageNo, pageSize, sortField, sortDir);
         List < Post > listPosts = page.getContent();
@@ -203,7 +184,17 @@ public class PostController {
         model.addAttribute("sortDir", sortDir);
         model.addAttribute("reverseSortDir", sortDir.equals("desc") ? "asc" : "desc");
 
-        model.addAttribute("listPost", listPosts);
+        List<Post> listPosts1;
+        if(keyword1!=null){
+            listPosts1 = postsService.listAll(keyword1);
+            model.addAttribute("listPost1", listPosts1);
+        }
+
+        if(keyword1==null){
+            model.addAttribute("listPost1", listPosts);
+
+        }
+
         return "PostsList";
     }
 

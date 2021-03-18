@@ -4,7 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Blog</title>
-
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 </head>
 
@@ -16,6 +15,11 @@
     <a th:href="@{/posts/showNewPostsForm}" class="btn btn-primary btn-sm mb-3">Add Posts</a>
     <a th:href="@{'/posts/page/' + ${currentPage} + '?sortField=publishedAt&sortDir=' + ${reverseSortDir}}">
         Sort</a>
+    <form th:action="@{/posts/list}">
+        Filter: <input type="text" name="keyword" id="keyword" size="50" th:value="${keyword}" required />
+        &nbsp;
+        <input type="submit" value="Search" />
+        &nbsp;
     <table border="1" class="table table-striped table-responsive-md">
         <thead>
             <tr>
@@ -31,7 +35,7 @@
 
 
 
-            <tr th:each="posts : ${listPost}">
+            <tr th:each="posts : ${listPost1}">
                 <td th:text="${posts.title}"></td>
                 <td th:text="${posts.excerpt}"></td>
                 <td th:text="${posts.content}"></td>
@@ -71,7 +75,7 @@
         </div>
     </div>
 
-
+    </form>
 
 </div>
 

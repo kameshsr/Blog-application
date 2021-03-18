@@ -62,7 +62,17 @@ public class PostTagServiceImplementation implements PostService, TagService{
 
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
         return this.postsRepository.findAll(pageable);
+
     }
+
+    @Override
+    public List<Post> listAll(String keyword) {
+        if(keyword != null) {
+            return postsRepository.search(keyword);
+        }
+        return this.postsRepository.findAll();
+    }
+
 
     @Override
     public List<Tag> findAll() {
