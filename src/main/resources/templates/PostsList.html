@@ -15,9 +15,15 @@
     <a th:href="@{/posts/showNewPostsForm}" class="btn btn-primary btn-sm mb-3">Add Posts</a>
     <a th:href="@{'/posts/page/' + ${currentPage} + '?sortField=publishedAt&sortDir=' + ${reverseSortDir}}">
         Sort</a>
+
     <form th:action="@{/posts/list}">
-        Filter: <input type="text" name="keyword" id="keyword" size="50" th:value="${keyword}" required />
-        &nbsp;
+        <input type="text" name="keyword2" id="keyword2" size="50" th:value="${keyword2}"/>
+        &nbsp;<br>
+        <input type="submit" value="Filter" />
+    </form>
+    <form th:action="@{/posts/list}" >
+        <input type="text" name="keyword" id="keyword" size="50" th:value="${keyword}"/>
+        &nbsp;<br>
         <input type="submit" value="Search" />
         &nbsp;
     <table border="1" class="table table-striped table-responsive-md">

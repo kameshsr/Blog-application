@@ -73,10 +73,13 @@ public class PostController {
     }
 
     @GetMapping("/posts/list")
-    public String viewPostsList(Model model, @Param("keyword") String keyword) {
+    public String viewPostsList(Model model, @Param("keyword") String keyword, @Param("keyword2") String keyword2) {
         keyword1=keyword;
+        System.out.println(keyword2);
         List<Post> listPosts = postsService.listAll(keyword);
         model.addAttribute(("listPosts"), listPosts);
+        String authorName = null;
+        model.addAttribute("authorName", authorName);
         return findPaginated(1, "publishedAt", "asc", model);
     }
 
@@ -194,7 +197,8 @@ public class PostController {
             model.addAttribute("listPost1", listPosts);
 
         }
-
+        String authorName=null;
+        model.addAttribute("authorName", authorName);
         return "PostsList";
     }
 

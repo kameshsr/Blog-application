@@ -3,8 +3,6 @@ package com.BlogCRUD.Blog.models;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -56,6 +54,11 @@ public class Post extends BaseModel {
 
     @Column(name = "tag")
     private String tag;
+
+
+
+
+
 
     public int getId() {
         return id;
@@ -154,4 +157,6 @@ public class Post extends BaseModel {
         }
         return false;
     }
+
+
 }
