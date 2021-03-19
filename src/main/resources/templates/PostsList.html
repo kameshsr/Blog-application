@@ -34,6 +34,7 @@
                 <th> Excerpt </th>
                 <th> Content </th>
                 <th> Author </th>
+                <th> Published Date time</th>
 
             </tr>
         </thead>
@@ -46,6 +47,7 @@
                 <td th:text="${posts.excerpt}"></td>
                 <td th:text="${posts.content}"></td>
                 <td th:text="${posts.author}"></td>
+                <td th:text="${posts.publishedAt}"</td>
 
                 <td>
                     <a th:href="@{/posts/{id}(id=${posts.id})}" class="btn btn-primary"> View Post</a>

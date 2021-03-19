@@ -5,6 +5,7 @@ import com.BlogCRUD.Blog.models.Post;
 import com.BlogCRUD.Blog.models.Tag;
 import com.BlogCRUD.Blog.models.User;
 import com.BlogCRUD.Blog.repository.CommentRepository;
+import com.BlogCRUD.Blog.repository.PostRepository;
 import com.BlogCRUD.Blog.repository.TagRepository;
 import com.BlogCRUD.Blog.repository.UserRepository;
 import com.BlogCRUD.Blog.services.PostService;
@@ -17,6 +18,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,7 +28,7 @@ import java.util.Optional;
 //@RequestMapping("/posts")
 public class PostController {
 
-    public String keyword1=null;
+    public String keyword1=null, filterKeyword;
 
     @Autowired
     private PostService postsService;
@@ -37,6 +41,9 @@ public class PostController {
 
     @Autowired
     private CommentRepository commentRepository;
+
+    @Autowired
+    private PostRepository postRepository;
 
     @GetMapping("/")
     public String viewHomePage(){
@@ -75,6 +82,7 @@ public class PostController {
     @GetMapping("/posts/list")
     public String viewPostsList(Model model, @Param("keyword") String keyword, @Param("keyword2") String keyword2) {
         keyword1=keyword;
+        filterKeyword =keyword2;
         System.out.println(keyword2);
         List<Post> listPosts = postsService.listAll(keyword);
         model.addAttribute(("listPosts"), listPosts);
@@ -196,6 +204,19 @@ public class PostController {
         if(keyword1==null){
             model.addAttribute("listPost1", listPosts);
 
+        }
+        if(filterKeyword!=null){
+            String[] arguments=filterKeyword.split(":");
+
+            //2021-03-17T22:37:13
+            String pattern = "yyyy-MM-dd HH:mm:ss";
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+            LocalDateTime localDateTime = LocalDateTime.from(formatter.parse(arguments[1]));
+
+            List<Post> filterList=postRepository.findByAuthorAndPublishedAt(arguments[0], localDateTime);
+
+            model.addAttribute("listPost1", filterList);
         }
         String authorName=null;
         model.addAttribute("authorName", authorName);
