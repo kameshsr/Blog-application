@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.metrics.StartupStep;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 //@RequestMapping("/posts")
@@ -46,7 +48,9 @@ public class PostController {
     private PostRepository postRepository;
 
     Post newPost = new Post();
-
+    Optional<String> tag1;
+    Optional<String> author1;
+    Optional<String> publishedDate;
     @GetMapping("/")
     public String viewHomePage(){
         return "index";
@@ -88,6 +92,10 @@ public class PostController {
         System.out.println("Author "+author);
         System.out.println("tag "+tag);
         System.out.println("published date "+content);
+        author1=author;
+        tag1=tag;
+        publishedDate=content;
+
         keyword1=keyword;
         filterKeyword =keyword2;
         System.out.println(keyword2);
@@ -218,6 +226,38 @@ public class PostController {
             model.addAttribute("listPost1", listPosts);
 
         }
+        if(!author1.isEmpty() && !tag1.isEmpty() && !publishedDate.isEmpty()){
+            List<String> authorList = author1.stream().collect(Collectors.toList());
+            List<String> tagList = tag1.stream().collect(Collectors.toList());
+            List<String> dateList = publishedDate.stream().collect(Collectors.toList());
+            String date = dateList.get(0);
+            //date.replace("T"," ");
+            //String DATE_FORMAT_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+           LocalDateTime date1 = java.time.LocalDateTime.parse(
+                   date ,
+                   DateTimeFormatter.ofPattern( "yyyy-MM-dd'T'HH:mm:ss" )
+           );
+            listPosts1 = postRepository.findBypublishedAt(date1);
+            listPosts1.add(postRepository.findByauthorIn(authorList).get(0));
+            //listPosts1.add(postRepository.findBytagIn(tagList).get(0));
+            model.addAttribute("listPost1", listPosts1);
+
+
+        }else if(!author1.isEmpty() && !tag1.isEmpty()){
+            List<String> authorList = author1.stream().collect(Collectors.toList());
+            List<String> tagList = tag1.stream().collect(Collectors.toList());
+            listPosts1 = postRepository.findBytagIn(tagList);
+            listPosts1.add(postRepository.findByauthorIn(authorList).get(0));
+            System.out.println(listPosts1);
+            model.addAttribute("listPost1", listPosts1);
+
+        }else if(!author1.isEmpty()){
+            List<String> authorList = author1.stream().collect(Collectors.toList());
+            System.out.println("inside filter author "+authorList);
+            listPosts1 = postRepository.findByauthorIn(authorList);
+            System.out.println(listPosts1);
+            model.addAttribute("listPost1", listPosts1);
+        }
 
         String authorName=null;
         model.addAttribute("authorName", authorName);
@@ -225,6 +265,9 @@ public class PostController {
 
         model.addAttribute("newPost", newPost);
         System.out.println("inside pagination "+newPost);
+
+
+
         return "PostsList";
     }
 

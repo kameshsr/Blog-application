@@ -15,4 +15,7 @@ public interface PostRepository extends JpaRepository<Post, Integer> , JpaSpecif
     public List<Post> search(String keyword);
 
     List<Post> findByAuthorAndPublishedAt(String author, LocalDateTime published_at);
+    List<Post> findByauthorIn(List<String> author);
+    List<Post> findBytagIn(List<String> tag);
+    List<Post> findBypublishedAt(LocalDateTime published_at);
 }

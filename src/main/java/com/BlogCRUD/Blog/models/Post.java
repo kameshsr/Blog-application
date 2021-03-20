@@ -55,11 +55,6 @@ public class Post extends BaseModel {
     @Column(name = "tag")
     private String tag;
 
-
-
-
-
-
     public int getId() {
         return id;
     }
