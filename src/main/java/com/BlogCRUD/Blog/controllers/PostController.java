@@ -81,6 +81,7 @@ public class PostController {
 
     @GetMapping("/posts/list")
     public String viewPostsList(Model model, @Param("keyword") String keyword, @Param("keyword2") String keyword2) {
+        System.out.println(keyword2);
         keyword1=keyword;
         filterKeyword =keyword2;
         System.out.println(keyword2);
@@ -88,6 +89,8 @@ public class PostController {
         model.addAttribute(("listPosts"), listPosts);
         String authorName = null;
         model.addAttribute("authorName", authorName);
+        Post newPost = new Post();
+        model.addAttribute("newPost", newPost);
         return findPaginated(1, "publishedAt", "asc", model);
     }
 
@@ -205,8 +208,8 @@ public class PostController {
             model.addAttribute("listPost1", listPosts);
 
         }
-        if(filterKeyword!=null){
-            String[] arguments=filterKeyword.split(":");
+        /*if(filterKeyword!=null){
+            String[] arguments=filterKeyword.split(",");
 
             //2021-03-17T22:37:13
             String pattern = "yyyy-MM-dd HH:mm:ss";
@@ -217,9 +220,13 @@ public class PostController {
             List<Post> filterList=postRepository.findByAuthorAndPublishedAt(arguments[0], localDateTime);
 
             model.addAttribute("listPost1", filterList);
-        }
+        }*/
         String authorName=null;
         model.addAttribute("authorName", authorName);
+
+        Post newPost = new Post();
+        model.addAttribute("newPost", newPost);
+
         return "PostsList";
     }
 
