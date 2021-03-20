@@ -158,5 +158,19 @@ public class Post extends BaseModel {
         return false;
     }
 
-
+    @Override
+    public String toString() {
+        return "Post{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", excerpt='" + excerpt + '\'' +
+                ", content='" + content + '\'' +
+                ", author='" + author + '\'' +
+                ", publishedAt=" + publishedAt +
+                ", isPublished=" + isPublished +
+                ", tags=" + tags +
+                ", comments=" + comments +
+                ", tag='" + tag + '\'' +
+                '}';
+    }
 }

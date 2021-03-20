@@ -6,6 +6,8 @@
     <title>Blog</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link th:rel="stylesheet" th:href="@{assets/bootstrap-select-1.13.9/dist/css/bootstrap-select.css}"/>
+    <link th:rel="stylesheet" th:href="@{webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
 </head>
 
 <body>
@@ -22,12 +24,34 @@
         &nbsp;<br>
 
         <div class="form-group">
-            <label for="author">Select dips</label>
+            <label for="author">Select Authors</label>
             <select class="form-control selectpicker" th:field="*{newPost.author}" id="author" multiple>
 
-                <option th:each="dip : ${listPost1}"
-                        th:value="${dip.author}"
-                        th:text="${dip.author}">dip
+                <option th:each="post : ${listPost1}"
+                        th:value="${post.author}"
+                        th:text="${post.author}">author
+                </option>
+
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="tag">Select tags</label>
+            <select class="form-control selectpicker" th:field="*{newPost.tag}" id="tag" multiple>
+
+                <option th:each="tag : ${tagList}"
+                        th:value="${tag.name}"
+                        th:text="${tag.name}">tag
+                </option>
+
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="publishedAt">Select Published Date </label>
+            <select class="form-control selectpicker" th:field="*{newPost.content}" id="publishedAt" multiple>
+
+                <option th:each="post : ${listPost1}"
+                        th:value="${post.publishedAt}"
+                        th:text="${post.publishedAt}">Published Date
                 </option>
 
             </select>
