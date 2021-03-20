@@ -238,7 +238,7 @@ public class PostController {
                    DateTimeFormatter.ofPattern( "yyyy-MM-dd'T'HH:mm:ss" )
            );
             listPosts1 = postRepository.findBypublishedAt(date1);
-            listPosts1.add(postRepository.findByauthorIn(authorList).get(0));
+            //listPosts1.add(postRepository.findByauthorIn(authorList).get(0));
             //listPosts1.add(postRepository.findBytagIn(tagList).get(0));
             model.addAttribute("listPost1", listPosts1);
 
