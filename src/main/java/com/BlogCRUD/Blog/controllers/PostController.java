@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -216,7 +217,7 @@ public class PostController {
         model.addAttribute("sortDir", sortDir);
         model.addAttribute("reverseSortDir", sortDir.equals("desc") ? "asc" : "desc");
 
-        List<Post> listPosts1;
+        List<Post> listPosts1 = new ArrayList<>();
         if(keyword1!=null){
             listPosts1 = postsService.listAll(keyword1);
             model.addAttribute("listPost1", listPosts1);
@@ -231,9 +232,7 @@ public class PostController {
             List<String> tagList = tag1.stream().collect(Collectors.toList());
             List<String> dateList = publishedDate.stream().collect(Collectors.toList());
             String date = dateList.get(0);
-            //date.replace("T"," ");
-            //String DATE_FORMAT_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
-           LocalDateTime date1 = java.time.LocalDateTime.parse(
+            LocalDateTime date1 = java.time.LocalDateTime.parse(
                    date ,
                    DateTimeFormatter.ofPattern( "yyyy-MM-dd'T'HH:mm:ss" )
            );
@@ -247,15 +246,19 @@ public class PostController {
             List<String> authorList = author1.stream().collect(Collectors.toList());
             List<String> tagList = tag1.stream().collect(Collectors.toList());
             listPosts1 = postRepository.findBytagIn(tagList);
-            listPosts1.add(postRepository.findByauthorIn(authorList).get(0));
+            //listPosts1.add(postRepository.findByauthor(authorList).get(0));
             System.out.println(listPosts1);
             model.addAttribute("listPost1", listPosts1);
 
         }else if(!author1.isEmpty()){
             List<String> authorList = author1.stream().collect(Collectors.toList());
             System.out.println("inside filter author "+authorList);
-            listPosts1 = postRepository.findByauthorIn(authorList);
-            System.out.println(listPosts1);
+
+            listPosts1=postsService.getAllPublishedPosts();
+
+            
+
+            System.out.println("list post format="+listPosts1);
             model.addAttribute("listPost1", listPosts1);
         }
 

@@ -4,6 +4,7 @@ import com.BlogCRUD.Blog.models.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -15,7 +16,10 @@ public interface PostRepository extends JpaRepository<Post, Integer> , JpaSpecif
     public List<Post> search(String keyword);
 
     List<Post> findByAuthorAndPublishedAt(String author, LocalDateTime published_at);
-    List<Post> findByauthorIn(List<String> author);
+
+    //@Query(nativeQuery = true, value = "SELECT * FROM posts as p WHERE p.author IN (:authors)")
+    //List<Post> findByauthor(@Param("authors") List<String> authors);
+    Post findByauthor(String author);
     List<Post> findBytagIn(List<String> tag);
     List<Post> findBypublishedAt(LocalDateTime published_at);
 }
