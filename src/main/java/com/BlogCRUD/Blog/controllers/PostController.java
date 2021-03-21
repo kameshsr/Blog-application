@@ -254,12 +254,18 @@ public class PostController {
             List<String> authorList = author1.stream().collect(Collectors.toList());
             System.out.println("inside filter author "+authorList);
 
-            listPosts1=postsService.getAllPublishedPosts();
-
-            
+            List<Post> listPosts2=postsService.getAllPublishedPosts();
+            System.out.println("size="+listPosts1.size());
+            for(int i=0;i<listPosts2.size();i++) {
+                Post p=listPosts2.get(i);
+                if(authorList.contains(p.getAuthor())) {
+                    listPosts2.add(p);
+                }
+                System.out.println("inside for"+ p);
+            }
 
             System.out.println("list post format="+listPosts1);
-            model.addAttribute("listPost1", listPosts1);
+            model.addAttribute("listPost1", listPosts2);
         }
 
         String authorName=null;
