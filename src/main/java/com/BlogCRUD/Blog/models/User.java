@@ -2,6 +2,7 @@ package com.BlogCRUD.Blog.models;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "user", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
@@ -33,6 +34,16 @@ public class User {
     public User() {
 
     }
+
+    public User(String name, String email, String password, Collection<Role> roles) {
+        super();
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.roles = roles;
+    }
+
+
 
     public int getId() {
         return id;

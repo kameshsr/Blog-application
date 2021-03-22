@@ -6,6 +6,7 @@ import com.BlogCRUD.Blog.models.Tag;
 import com.BlogCRUD.Blog.models.User;
 import com.BlogCRUD.Blog.repository.CommentRepository;
 import com.BlogCRUD.Blog.repository.PostRepository;
+import com.BlogCRUD.Blog.repository.TagRepository;
 import com.BlogCRUD.Blog.repository.UserRepository;
 import com.BlogCRUD.Blog.services.PostService;
 import com.BlogCRUD.Blog.services.TagService;
@@ -32,9 +33,6 @@ public class MainController {
     private PostService postsService;
 
     @Autowired
-    private TagService tagService;
-
-    @Autowired
     private UserRepository userRepository;
 
     @Autowired
@@ -42,6 +40,9 @@ public class MainController {
 
     @Autowired
     private PostRepository postRepository;
+
+    @Autowired
+    private TagRepository tagRepository;
 
     Post newPost = new Post();
     Optional<String> tag1;
@@ -53,30 +54,9 @@ public class MainController {
         return "index";
     }
 
-    @GetMapping("/register")
-    public String showRegistrationForm(Model model) {
-        model.addAttribute("user", new User());
-        return "signupForm";
-    }
-
-    @PostMapping("/process_register")
-    public String processRegister(User user) {
-        userRepository.save(user);
-        return "RegisterSuccess";
-    }
-
     @GetMapping("/login")
-    public String login(Model model) {
-        model.addAttribute("user", new User());
-        return "login";
-    }
-
-    @PostMapping("/processLogin")
-    public String processLogin(User user) {
-        if (user.getEmail().equals("admin1@gmail.com") && user.getPassword().equals("admin1")) {
-            return "redirect:/posts/list";
-        }
-        return "login";
+    public String login() {
+        return "Login";
     }
 
     @GetMapping("/posts/list")
@@ -89,7 +69,7 @@ public class MainController {
         searchKeyword = keyword;
         List<Post> listPosts = postsService.listAll(keyword);
         model.addAttribute(("listPosts"), listPosts);
-        model.addAttribute("tagList", tagService.findAll());
+        model.addAttribute("tagList", tagRepository.findAll());
         return findPaginated(1, "publishedAt", "asc", model);
     }
 
@@ -108,7 +88,7 @@ public class MainController {
 
     @GetMapping("/posts/addTag/{id}")
     public String addTag(@PathVariable("id") int postId, Model model) {
-        model.addAttribute("tag", tagService.findAll());
+        model.addAttribute("tag", tagRepository.findAll());
         model.addAttribute("posts", postsService.findOne(postId));
         Tag tags = new Tag();
         model.addAttribute("tags", tags);
@@ -139,7 +119,7 @@ public class MainController {
         String[] listTag = tag.split(",");
         for (String tags : listTag) {
             Tag tag1 = new Tag(tags);
-            tagService.saveTags(tag1);
+            tagRepository.save(tag1);
             posts.getTags().add(tag1);
         }
         postsService.savePosts(posts);
@@ -150,7 +130,7 @@ public class MainController {
     public String saveTags(@PathVariable("id") int postId, @ModelAttribute("tags") Tag tags) {
         Post currentPosts = postsService.getPostsById(postId);
         currentPosts.getTags().add(tags);
-        tagService.saveTags(tags);
+        tagRepository.save(tags);
         return "redirect:/posts/listUnPublishedPosts";
     }
 
