@@ -192,16 +192,12 @@ public class MainController {
 
         } else if (!author1.isEmpty()) {
             List<String> authorList = author1.stream().collect(Collectors.toList());
-            List<Post> listPosts2 = postsService.getAllPublishedPosts();
-            for (int i = 0; i < listPosts2.size(); i++) {
-                Post p = listPosts2.get(i);
-                if (authorList.contains(p.getAuthor())) {
-                    listPosts2.add(p);
-                }
-            }
+            List<Post> listPosts2 = postRepository.findByauthorIn(authorList);
+
             model.addAttribute("listPost1", listPosts2);
         }
         model.addAttribute("newPost", newPost);
+
         return "PostsList";
     }
 

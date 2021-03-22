@@ -19,7 +19,11 @@ public interface PostRepository extends JpaRepository<Post, Integer>{
 
     Post findByauthor(String author);
 
+    List<Post> findByauthorIn(List<String> author);
+
     List<Post> findBytagIn(List<String> tag);
 
     List<Post> findBypublishedAt(LocalDateTime published_at);
+
+
 }
