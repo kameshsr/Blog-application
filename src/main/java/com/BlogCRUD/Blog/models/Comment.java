@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "comments")
-public class Comment extends BaseModel{
+public class Comment extends BaseModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,9 +16,9 @@ public class Comment extends BaseModel{
     private String email;
     private String comment;
 
-    @ManyToOne(cascade= {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @NotFound(action = NotFoundAction.IGNORE)
-    @JoinColumn(name="posts_id", nullable = true)
+    @JoinColumn(name = "posts_id", nullable = true)
     private Post post;
 
     public Comment() {
@@ -64,6 +64,4 @@ public class Comment extends BaseModel{
     public void setComment(String comment) {
         this.comment = comment;
     }
-
-
 }

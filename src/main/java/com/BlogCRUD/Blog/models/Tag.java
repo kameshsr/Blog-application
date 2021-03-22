@@ -12,11 +12,11 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table( name = "tags")
-public class Tag extends BaseModel{
+@Table(name = "tags")
+public class Tag extends BaseModel {
 
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
 
@@ -31,21 +31,27 @@ public class Tag extends BaseModel{
         super();
         this.name = name;
     }
+
     public long getId() {
         return id;
     }
+
     public void setId(int id) {
         this.id = id;
     }
+
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
+
     public Set<Post> getPosts() {
         return posts;
     }
+
     public void setPosts(Set<Post> posts) {
         this.posts = posts;
     }

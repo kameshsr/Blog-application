@@ -13,8 +13,6 @@ import java.util.*;
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "posts")
 public class Post extends BaseModel {
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -46,8 +44,8 @@ public class Post extends BaseModel {
     private Set<Tag> tags = new HashSet<>();
 
 
-    @OneToMany(mappedBy="post",
-            cascade= {CascadeType.REMOVE})
+    @OneToMany(mappedBy = "post",
+            cascade = {CascadeType.REMOVE})
 
     List<Comment> comments = new ArrayList<>();
 
@@ -144,9 +142,9 @@ public class Post extends BaseModel {
         this.comments = comments;
     }
 
-    public boolean hasComments(Comment comment){
-        for(Comment comment1: getComments()){
-            if(comment1.getId()==comment.getId()){
+    public boolean hasComments(Comment comment) {
+        for (Comment comment1 : getComments()) {
+            if (comment1.getId() == comment.getId()) {
                 return true;
             }
         }

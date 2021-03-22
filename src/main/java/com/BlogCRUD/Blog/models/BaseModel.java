@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 @Data
 @MappedSuperclass
 abstract class BaseModel {
-
     @Column(updatable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;

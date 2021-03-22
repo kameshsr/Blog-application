@@ -1,23 +1,38 @@
 package com.BlogCRUD.Blog.models;
+
 import javax.persistence.*;
+import java.util.Collection;
 
 @Entity
-@Table(name = "users")
+@Table(name = "user", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false, unique = true, length = 45)
-    private String email;
-
-    @Column(nullable = false, length = 64)
-    private String password;
-
     @Column(name = "name", nullable = false, length = 50)
     private String name;
 
+    private String email;
+
+    private String password;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(
+                    name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "role_id", referencedColumnName = "id"
+            )
+    )
+
+    public Collection<Role> roles;
+
+    public User() {
+
+    }
 
     public int getId() {
         return id;
@@ -49,5 +64,13 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Collection<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Collection<Role> roles) {
+        this.roles = roles;
     }
 }
