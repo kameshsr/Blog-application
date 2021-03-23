@@ -19,10 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -176,16 +173,15 @@ public class MainController {
         if (searchKeyword != null) {
             listPost = postsService.listAll(searchKeyword);
             model.addAttribute("listPost1", listPost);
-        }
-        if (searchKeyword == null) {
+        } else if (searchKeyword == null) {
             model.addAttribute("listPost1", listPosts);
 
         }
         if(!tag1.isEmpty() || startingDate!=null || !author1.isEmpty()) {
             List<Post> listPostFilter = new ArrayList<>();
+
             if (!tag1.isEmpty()) {
-                List<String> authorList = author1.stream().collect(Collectors.toList());
-                List<String> tagList = tag1.stream().collect(Collectors.toList());
+                List<String> tagList = Arrays.asList(tag1.stream().collect(Collectors.toList()).get(0).split(","));
                 listPostFilter = postRepository.findBytagIn(tagList);
             }else if(startingDate!=null && endingDate!=null){
                 System.out.println("starting date"+ startingDate+endingDate);
