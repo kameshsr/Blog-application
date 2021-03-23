@@ -3,13 +3,11 @@ package com.BlogCRUD.Blog.controllers;
 import com.BlogCRUD.Blog.models.Comment;
 import com.BlogCRUD.Blog.models.Post;
 import com.BlogCRUD.Blog.models.Tag;
-import com.BlogCRUD.Blog.models.User;
 import com.BlogCRUD.Blog.repository.CommentRepository;
 import com.BlogCRUD.Blog.repository.PostRepository;
 import com.BlogCRUD.Blog.repository.TagRepository;
 import com.BlogCRUD.Blog.repository.UserRepository;
 import com.BlogCRUD.Blog.services.PostService;
-import com.BlogCRUD.Blog.services.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
@@ -17,9 +15,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
@@ -175,11 +175,9 @@ public class MainController {
             model.addAttribute("listPost1", listPost);
         } else if (searchKeyword == null) {
             model.addAttribute("listPost1", listPosts);
-
         }
         if(!tag1.isEmpty() || startingDate!=null || !author1.isEmpty()) {
             List<Post> listPostFilter = new ArrayList<>();
-
             if (!tag1.isEmpty()) {
                 List<String> tagList = Arrays.asList(tag1.stream().collect(Collectors.toList()).get(0).split(","));
                 listPostFilter = postRepository.findBytagIn(tagList);
@@ -198,20 +196,8 @@ public class MainController {
                 listPostFilter = listPostDateFilter;
             }
             if (!author1.isEmpty()) {
-                List<String> authorList = author1.stream().collect(Collectors.toList());
-                List<Post> listPostsAuthorFilter = new ArrayList<>();
-
-                for(Post post: listPosts) {
-                    System.out.println(authorList+ " "+ post.getAuthor());
-                    if(authorList.contains(post.getAuthor())) {
-                        System.out.println(authorList+ "inside if "+ post.getAuthor());
-                        listPostsAuthorFilter.add(post);
-                    }
-                }
-                System.out.println("listPosts author filter "+listPostsAuthorFilter);
-
-                System.out.println("listPosts "+listPosts);
-                listPostFilter = listPostsAuthorFilter;
+                List<String> authorList = Arrays.asList(author1.stream().collect(Collectors.toList()).get(0).split(","));
+                listPostFilter = postRepository.findByauthorIn(authorList);
             }
             model.addAttribute("listPost1", listPostFilter);
 
