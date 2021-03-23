@@ -9,6 +9,8 @@
           href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
           crossorigin="anonymous">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/css/bootstrap-select.min.css" />
 
 </head>
 
@@ -52,9 +54,10 @@
     <form th:action="@{/posts/list}">
         <div class="form-group">
             <label for="author">Select Authors</label>
-            <select class="form-control selectpicker" th:field="*{newPost.author}" id="author" multiple>
+            <select class="form-control selectpicker" th:field="*{newPost.author}" id="author" data-live-search="true"
+                    multiple>
 
-                <option th:each="post : ${listPost1}"
+                <option th:each="post : ${postList}"
                         th:value="${post.author}"
                         th:text="${post.author}">author
                 </option>
@@ -76,7 +79,7 @@
             <label for="publishedAt">Select Published Date </label>
             <select class="form-control selectpicker" th:field="*{newPost.content}" id="publishedAt" multiple>
 
-                <option th:each="post : ${listPost1}"
+                <option th:each="post : ${postList}"
                         th:value="${post.publishedAt}"
                         th:text="${post.publishedAt}">Published Date
                 </option>
@@ -155,5 +158,8 @@
 </div>
 
 </body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.min.js"></script>
 
 </html>

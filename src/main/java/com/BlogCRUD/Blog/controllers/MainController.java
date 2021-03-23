@@ -165,6 +165,7 @@ public class MainController {
         model.addAttribute("reverseSortDir", sortDir.equals("desc") ? "asc" : "desc");
 
         List<Post> listPosts1 = new ArrayList<>();
+        model.addAttribute("postList", listPosts);
         if (searchKeyword != null) {
             listPosts1 = postsService.listAll(searchKeyword);
             model.addAttribute("listPost1", listPosts1);
@@ -173,9 +174,7 @@ public class MainController {
             model.addAttribute("listPost1", listPosts);
 
         }
-        if (!author1.isEmpty() && !tag1.isEmpty() && !publishedDate.isEmpty()) {
-            List<String> authorList = author1.stream().collect(Collectors.toList());
-            List<String> tagList = tag1.stream().collect(Collectors.toList());
+        if (!publishedDate.isEmpty()) {
             List<String> dateList = publishedDate.stream().collect(Collectors.toList());
             String date = dateList.get(0);
             LocalDateTime date1 = java.time.LocalDateTime.parse(
@@ -192,10 +191,20 @@ public class MainController {
 
         } else if (!author1.isEmpty()) {
             List<String> authorList = author1.stream().collect(Collectors.toList());
-            List<Post> listPosts2 = postRepository.findByauthorIn(authorList);
-
+            List<Post> listPosts2 = new ArrayList<>();
+            for (int i = 0; i < listPosts.size(); i++) {
+                Post post = new Post();
+                post =listPosts.get(i);
+                System.out.println(post);
+                if (authorList.contains(post.getAuthor())) {
+                    listPosts2.add(post);
+                }
+            }
+            System.out.println("listPosts "+listPosts);
+            System.out.println("list post2 "+listPosts2);
             model.addAttribute("listPost1", listPosts2);
         }
+
         model.addAttribute("newPost", newPost);
 
         return "PostsList";
