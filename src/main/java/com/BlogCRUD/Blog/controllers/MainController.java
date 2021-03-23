@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -49,6 +50,8 @@ public class MainController {
     Optional<String> author1;
     Optional<String> publishedDate;
 
+    String startingDate, endingDate;
+
     @GetMapping("/")
     public String viewHomePage() {
         return "index";
@@ -62,7 +65,10 @@ public class MainController {
     @GetMapping("/posts/list")
     public String viewPostsList(Model model, @Param("keyword") String keyword, @Param("author")
             Optional<String> author, @Param("tag") Optional<String> tag
-            , @Param("content") Optional<String> content) {
+            , @Param("content") Optional<String> content, @Param("startDate") String startDate, @Param("endDate") String endDate) {
+        System.out.println(startDate+" "+endDate);
+        startingDate = startDate;
+        endingDate = endDate;
         author1 = author;
         tag1 = tag;
         publishedDate = content;
@@ -157,6 +163,7 @@ public class MainController {
         Page<Post> page = postsService.findPaginated(pageNo, pageSize, sortField, sortDir);
         List<Post> listPosts = page.getContent();
 
+
         model.addAttribute("currentPage", pageNo);
         model.addAttribute("totalPages", page.getTotalPages());
         model.addAttribute("totalItems", page.getTotalElements());
@@ -164,46 +171,56 @@ public class MainController {
         model.addAttribute("sortDir", sortDir);
         model.addAttribute("reverseSortDir", sortDir.equals("desc") ? "asc" : "desc");
 
-        List<Post> listPosts1 = new ArrayList<>();
+        List<Post> listPost = new ArrayList<>();
         model.addAttribute("postList", listPosts);
         if (searchKeyword != null) {
-            listPosts1 = postsService.listAll(searchKeyword);
-            model.addAttribute("listPost1", listPosts1);
+            listPost = postsService.listAll(searchKeyword);
+            model.addAttribute("listPost1", listPost);
         }
         if (searchKeyword == null) {
             model.addAttribute("listPost1", listPosts);
 
         }
-        if (!publishedDate.isEmpty()) {
-            List<String> dateList = publishedDate.stream().collect(Collectors.toList());
-            String date = dateList.get(0);
-            LocalDateTime date1 = java.time.LocalDateTime.parse(
-                    date,
-                    DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
-            );
-            listPosts1 = postRepository.findBypublishedAt(date1);
-            model.addAttribute("listPost1", listPosts1);
-        } else if (!author1.isEmpty() && !tag1.isEmpty()) {
-            List<String> authorList = author1.stream().collect(Collectors.toList());
-            List<String> tagList = tag1.stream().collect(Collectors.toList());
-            listPosts1 = postRepository.findBytagIn(tagList);
-            model.addAttribute("listPost1", listPosts1);
-
-        } else if (!author1.isEmpty()) {
-            List<String> authorList = author1.stream().collect(Collectors.toList());
-            List<Post> listPosts2 = new ArrayList<>();
-            for (int i = 0; i < listPosts.size(); i++) {
-                Post post = new Post();
-                post =listPosts.get(i);
-                System.out.println(post);
-                if (authorList.contains(post.getAuthor())) {
-                    listPosts2.add(post);
+        if(!tag1.isEmpty() || startingDate!=null || !author1.isEmpty()) {
+            List<Post> listPostFilter = new ArrayList<>();
+            if (!tag1.isEmpty()) {
+                List<String> authorList = author1.stream().collect(Collectors.toList());
+                List<String> tagList = tag1.stream().collect(Collectors.toList());
+                listPostFilter = postRepository.findBytagIn(tagList);
+            }else if(startingDate!=null && endingDate!=null){
+                System.out.println("starting date"+ startingDate+endingDate);
+                List<Post> listPostDateFilter= new ArrayList<>();
+                List<String> publishedDateList = new ArrayList<>();
+                for(Post post: listPosts){
+                    DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+                    String date = post.getPublishedAt().format(formatter);
+                    if(startingDate.compareTo(date) <= 0 && endingDate.compareTo(date) >= 0) {
+                        listPostDateFilter.add(post);
+                    }
+                    publishedDateList.add(date.substring(0, 10));
                 }
+                listPostFilter = listPostDateFilter;
             }
-            System.out.println("listPosts "+listPosts);
-            System.out.println("list post2 "+listPosts2);
-            model.addAttribute("listPost1", listPosts2);
+            if (!author1.isEmpty()) {
+                List<String> authorList = author1.stream().collect(Collectors.toList());
+                List<Post> listPostsAuthorFilter = new ArrayList<>();
+
+                for(Post post: listPosts) {
+                    System.out.println(authorList+ " "+ post.getAuthor());
+                    if(authorList.contains(post.getAuthor())) {
+                        System.out.println(authorList+ "inside if "+ post.getAuthor());
+                        listPostsAuthorFilter.add(post);
+                    }
+                }
+                System.out.println("listPosts author filter "+listPostsAuthorFilter);
+
+                System.out.println("listPosts "+listPosts);
+                listPostFilter = listPostsAuthorFilter;
+            }
+            model.addAttribute("listPost1", listPostFilter);
+
         }
+
 
         model.addAttribute("newPost", newPost);
 

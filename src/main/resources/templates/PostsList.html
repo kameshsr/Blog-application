@@ -75,17 +75,16 @@
 
             </select>
         </div>
-        <div class="form-group">
-            <label for="publishedAt">Select Published Date </label>
-            <select class="form-control selectpicker" th:field="*{newPost.content}" id="publishedAt" multiple>
+        <label> Start Date </label>
+        <input type="date" value="01/01/2000" class="form-control" id="startDate" name="startDate"
+               th:value="${#calendars.format(startDate,'yyyy-MM-dd')}" />
+        <br>
+        <label> End Date </label>
+        <input type="date" value="01/01/2000" class="form-control" id="endDate" name="endDate"
+               th:value="${#calendars.format(endDate,'yyyy-MM-dd')}" />
+        <br>
 
-                <option th:each="post : ${postList}"
-                        th:value="${post.publishedAt}"
-                        th:text="${post.publishedAt}">Published Date
-                </option>
 
-            </select>
-        </div>
         <input type="submit" value="Filter"/>
     </form>
     <form th:action="@{/posts/list}">
