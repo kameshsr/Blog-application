@@ -27,9 +27,17 @@
                        style="margin-top: 10px;"  placeholder="Write your blog content"
                        name="notes" th:field="*{content}">
         </textarea></div>
-
-        <input type="text" th:field="*{author}" class="form-control mb-4 col-4">
+        <div th:switch="${#authentication.Principal.Username}">
+            <input th:case="'admin@gmail.com'" type="text" th:field="*{author}" placeholder="Author name"
+                   class="form-control mb-4 col-4" required >
+            <input th:case="*" type="hidden"
+                   th:value="${#authentication.Principal.Username}" name="author"
+                   placeholder="Author name"
+                   class="form-control mb-4 col-4" required >
+            <p th:case="*">Other</p>
+        </div>
         <input type="text" th:field="*{tag}" class="form-control mb-4 col-4">
+
 
         <button type="submit" class="btn btn-info col-2"> Update Blog</button>
     </form>

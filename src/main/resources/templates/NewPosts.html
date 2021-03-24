@@ -27,7 +27,9 @@
         <div th:switch="${#authentication.Principal.Username}">
             <input th:case="'admin@gmail.com'" type="text" th:field="*{author}" placeholder="Author name"
                    class="form-control mb-4 col-4" required >
-            <input th:case="*" type="hidden" th:field="*{author}" placeholder="Author name"
+            <input th:case="*" type="hidden"
+                   th:value="${#authentication.Principal.Username}" name="author"
+                   placeholder="Author name"
                    class="form-control mb-4 col-4" required >
             <p th:case="*">Other</p>
         </div>

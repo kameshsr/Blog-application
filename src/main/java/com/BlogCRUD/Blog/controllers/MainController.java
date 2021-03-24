@@ -11,10 +11,13 @@ import com.BlogCRUD.Blog.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -57,6 +60,11 @@ public class MainController {
     @GetMapping("/login")
     public String login() {
         return "Login";
+    }
+
+    @GetMapping("/access-denied")
+    public String showAccessDenied() {
+        return "AccessDenied";
     }
 
     @GetMapping("/posts/list")
@@ -117,6 +125,10 @@ public class MainController {
 
     @PostMapping("/posts/savePosts")
     public String savePosts(@ModelAttribute("posts") Post posts) {
+        if(posts.getPublishedAt()==null){
+            Post post = postsService.getPostsById(posts.getId());
+            posts.setPublishedAt(post.getPublishedAt());
+        }
         postsService.savePosts(posts);
         String tag = posts.getTag();
         String[] listTag = tag.split(",");
@@ -137,6 +149,7 @@ public class MainController {
         return "redirect:/posts/listUnPublishedPosts";
     }
 
+    @RolesAllowed("ROLE_ADMIN")
     @GetMapping("/posts/showFormForUpdate/{id}")
     public String showFormForUpdate(@PathVariable(value = "id") int id, Model model) {
         Post posts = postsService.getPostsById(id);
