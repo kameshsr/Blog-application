@@ -89,7 +89,7 @@
 
                 <td>
                     <a th:href="@{/posts/{id}(id=${posts.id})}" class="btn btn-primary"> View Post</a>
-                    <a th:href="@{/posts/showFormForUpdate/{id}(id=${posts.id})}" class="btn btn-primary">Update</a>
+                    <a th:href="@{/posts/showFormForUpdate/{id}(id=${posts.id})}" name ="${posts.author}" class="btn btn-primary">Update</a>
                     <a th:href="@{/posts/deletePosts/{id}(id=${posts.id})}" class="btn btn-danger">Delete</a>
                 </td>
             </tr>

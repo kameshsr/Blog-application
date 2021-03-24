@@ -13,16 +13,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -149,12 +149,33 @@ public class MainController {
         return "redirect:/posts/listUnPublishedPosts";
     }
 
-    @RolesAllowed("ROLE_ADMIN")
     @GetMapping("/posts/showFormForUpdate/{id}")
     public String showFormForUpdate(@PathVariable(value = "id") int id, Model model) {
+
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username;
+        Collection<? extends GrantedAuthority> authorites;
+        if (principal instanceof UserDetails) {
+            username = ((UserDetails)principal).getUsername();
+            authorites = ((UserDetails) principal).getAuthorities();
+        } else {
+            username = principal.toString();
+        }
+
+        System.out.println("Current Log in user "+ username);
+
         Post posts = postsService.getPostsById(id);
+        System.out.println(posts.getAuthor());
+        if(username.equals(posts.getAuthor()) == false) {
+            return "AccessDenied";
+        } else if(username.equalsIgnoreCase("admin@gmail.com")) {
+            model.addAttribute("posts", posts);
+            return "UpdatePosts";
+        }
+
         model.addAttribute("posts", posts);
         return "UpdatePosts";
+
     }
 
     @GetMapping("/posts/deletePosts/{id}")
