@@ -15,8 +15,9 @@
 </head>
 
 <body>
-<a href="/" th:href="@{/login}">Login
-    here</a>
+
+<a href="/" th:href="@{/login}">Login As different User</a>
+<a href="/" th:href="@{/logout}">Logout</a>
 <div class="container my-2">
     <h1> Posts List </h1>
 
@@ -78,8 +79,6 @@
             </tr>
             </thead>
             <tbody>
-
-
             <tr th:each="posts : ${listPost1}">
                 <td th:text="${posts.title}"></td>
                 <td th:text="${posts.excerpt}"></td>

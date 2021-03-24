@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <meta charset="ISO-8859-1">
     <title>Add New Blog</title>
@@ -24,7 +24,13 @@
                        name="notes" th:field="*{content}" required>
         </textarea></div>
 
-        <input type="text" th:field="*{author}" placeholder="Author name" class="form-control mb-4 col-4" required>
+        <div th:switch="${#authentication.Principal.Username}">
+            <input th:case="'admin@gmail.com'" type="text" th:field="*{author}" placeholder="Author name"
+                   class="form-control mb-4 col-4" required >
+            <input th:case="*" type="hidden" th:field="*{author}" placeholder="Author name"
+                   class="form-control mb-4 col-4" required >
+            <p th:case="*">Other</p>
+        </div>
 
         <input type="text" th:field="*{tag}" placeholder="Tag" class="form-control mb-4 col-4" required>
 

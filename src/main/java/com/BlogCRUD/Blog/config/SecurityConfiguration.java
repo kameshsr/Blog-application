@@ -34,9 +34,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 "/posts/page/{pageNo}**",
                 "/posts/addComment/{id}**",
                 "/posts/addComment/{postsId}/comment**",
+                "/resources/**",
                 "/js/**",
                 "/css/**",
                 "/img/**").permitAll()
+                .antMatchers("/posts/showNewPostsForm*").hasAnyRole("ROLE_USER", "ROLE_ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
