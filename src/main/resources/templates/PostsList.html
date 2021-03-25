@@ -17,6 +17,7 @@
 <body>
 <a href="/" th:href="@{/login}">Login as different User</a>
 Logged user: <span sec:authentication="name"></span>
+
 <a href="/" th:href="@{/logout}" sec:authorize="isAuthenticated()">Logout</a>
 
 <div class="container my-2">
@@ -91,11 +92,17 @@ Logged user: <span sec:authentication="name"></span>
 
                 <td>
                     <a th:href="@{/posts/{id}(id=${posts.id})}" class="btn btn-primary"> View Post</a>
-                    <a th:href="@{/posts/showFormForUpdate/{id}(id=${posts.id})}"
-                       name ="${posts.author}" class="btn btn-primary"
-                       sec:authorize="isAuthenticated()">Update</a>
-                    <a th:href="@{/posts/deletePosts/{id}(id=${posts.id})}"
-                       class="btn btn-danger" sec:authorize="isAuthenticated()">Delete</a>
+
+                    <div th:unless="${#authentication.Principal} eq 'anonymousUser'">
+                        <div th:if="${#authentication.Principal.Username} eq 'admin@gmail.com'
+                        or ${#authentication.Principal.Username} eq ${posts.author}">
+                            <a th:href="@{/posts/showFormForUpdate/{id}(id=${posts.id})}"
+                               name ="${posts.author}" class="btn btn-primary" sec:authorize="isAuthenticated()">Update</a>
+                            <a th:href="@{/posts/deletePosts/{id}(id=${posts.id})}"
+                               class="btn btn-danger" sec:authorize="isAuthenticated()">Delete</a>
+                        </div>
+                        </div>
+
                 </td>
             </tr>
             </tbody>
