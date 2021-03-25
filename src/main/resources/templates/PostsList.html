@@ -31,9 +31,9 @@
             <select class="form-control selectpicker" th:field="*{newPost.author}" id="author" data-live-search="true"
                     multiple>
 
-                <option th:each="post : ${postList}"
-                        th:value="${post.author}"
-                        th:text="${post.author}">author
+                <option th:each="currentAuthor : ${listAuthor}"
+                        th:value="${currentAuthor}"
+                        th:text="${currentAuthor}">author
                 </option>
 
             </select>
@@ -42,9 +42,9 @@
             <label for="tag">Select tags</label>
             <select class="form-control selectpicker" th:field="*{newPost.tag}" id="tag" multiple>
 
-                <option th:each="tag : ${tagList}"
-                        th:value="${tag.name}"
-                        th:text="${tag.name}">tag
+                <option th:each="currentTag : ${listTag}"
+                        th:value="${currentTag}"
+                        th:text="${currentTag}">tag
                 </option>
 
             </select>

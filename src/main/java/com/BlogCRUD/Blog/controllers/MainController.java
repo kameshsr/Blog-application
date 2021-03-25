@@ -11,18 +11,15 @@ import com.BlogCRUD.Blog.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.security.RolesAllowed;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
@@ -125,10 +122,7 @@ public class MainController {
 
     @PostMapping("/posts/savePosts")
     public String savePosts(@ModelAttribute("posts") Post posts) {
-        if(posts.getPublishedAt()==null){
-            Post post = postsService.getPostsById(posts.getId());
-            posts.setPublishedAt(post.getPublishedAt());
-        }
+
         postsService.savePosts(posts);
         String tag = posts.getTag();
         String[] listTag = tag.split(",");
@@ -151,31 +145,9 @@ public class MainController {
 
     @GetMapping("/posts/showFormForUpdate/{id}")
     public String showFormForUpdate(@PathVariable(value = "id") int id, Model model) {
-
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username;
-        Collection<? extends GrantedAuthority> authorites;
-        if (principal instanceof UserDetails) {
-            username = ((UserDetails)principal).getUsername();
-            authorites = ((UserDetails) principal).getAuthorities();
-        } else {
-            username = principal.toString();
-        }
-
-        System.out.println("Current Log in user "+ username);
-
         Post posts = postsService.getPostsById(id);
-        System.out.println(posts.getAuthor());
-        if(username.equals(posts.getAuthor()) == false) {
-            return "AccessDenied";
-        } else if(username.equalsIgnoreCase("admin@gmail.com")) {
-            model.addAttribute("posts", posts);
-            return "UpdatePosts";
-        }
-
         model.addAttribute("posts", posts);
         return "UpdatePosts";
-
     }
 
     @GetMapping("/posts/deletePosts/{id}")
@@ -204,6 +176,11 @@ public class MainController {
 
         List<Post> listPost = new ArrayList<>();
         model.addAttribute("postList", listPosts);
+        List<String> listAuthor = postRepository.findByDistinctAuthor();
+
+        model.addAttribute("listAuthor", listAuthor);
+        model.addAttribute("listTag", postRepository.findByDistinctTag());
+
         if (searchKeyword != null) {
             listPost = postsService.listAll(searchKeyword);
             model.addAttribute("listPost1", listPost);
@@ -216,7 +193,6 @@ public class MainController {
                 List<String> tagList = Arrays.asList(tag1.stream().collect(Collectors.toList()).get(0).split(","));
                 listPostFilter = postRepository.findBytagIn(tagList);
             }else if(startingDate!=null && endingDate!=null){
-                System.out.println("starting date"+ startingDate+endingDate);
                 List<Post> listPostDateFilter= new ArrayList<>();
                 List<String> publishedDateList = new ArrayList<>();
                 for(Post post: listPosts){
@@ -234,12 +210,8 @@ public class MainController {
                 listPostFilter = postRepository.findByauthorIn(authorList);
             }
             model.addAttribute("listPost1", listPostFilter);
-
         }
-
-
         model.addAttribute("newPost", newPost);
-
         return "PostsList";
     }
 
