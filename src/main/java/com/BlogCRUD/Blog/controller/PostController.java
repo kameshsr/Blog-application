@@ -5,7 +5,6 @@ import com.BlogCRUD.Blog.model.Tag;
 import com.BlogCRUD.Blog.repository.CommentRepository;
 import com.BlogCRUD.Blog.repository.PostRepository;
 import com.BlogCRUD.Blog.repository.TagRepository;
-import com.BlogCRUD.Blog.repository.UserRepository;
 import com.BlogCRUD.Blog.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

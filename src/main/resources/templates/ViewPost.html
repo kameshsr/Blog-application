@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
@@ -23,18 +24,19 @@
                 <span th:text="${newComments.email}"/><br>
                 <span th:text="${newComments.comment}"/><br>
 
-                <a th:href="@{/posts/{postsId}/updateComments/{commentId}(postsId=${posts.id}, commentId=${newComments.id})}" class="btn btn-primary">Update Comment</a>
+                <a th:href="@{/posts/{postsId}/updateComments/{commentId}(postsId=${posts.id},
+                commentId=${newComments.id})}" class="btn btn-primary" sec:authorize="isAuthenticated()">
+                    Update Comment</a>
                 <br>
-                <a th:href="@{/posts/{postsId}/deleteComments/{commentId}(postsId=${posts.id}, commentId=${newComments.id})}" class="btn btn-primary">Delete Comment</a>
+                <a th:href="@{/posts/{postsId}/deleteComments/{commentId}(postsId=${posts.id},
+                commentId=${newComments.id})}" class="btn btn-primary" sec:authorize="isAuthenticated()">
+                    Delete Comment</a>
                 <br>
 				</span>
-            <a th:href="@{/posts/addComment/{postsId}(postsId=${posts.id})}" class="btn btn-success btn-xs">Add Comment</a>
+            <a th:href="@{/posts/addComment/{postsId}(postsId=${posts.id})}" class="btn btn-success btn-xs">
+                Add Comment</a>
         </div>
-
     </div>
-
 </div>
-
-
 </body>
 </html>

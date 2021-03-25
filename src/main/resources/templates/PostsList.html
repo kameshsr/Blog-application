@@ -15,13 +15,15 @@
 </head>
 
 <body>
+<a href="/" th:href="@{/login}">Login as different User</a>
+Logged user: <span sec:authentication="name"></span>
+<a href="/" th:href="@{/logout}" sec:authorize="isAuthenticated()">Logout</a>
 
-<a href="/" th:href="@{/login}">Login As different User</a>
-<a href="/" th:href="@{/logout}">Logout</a>
 <div class="container my-2">
     <h1> Posts List </h1>
 
-    <a th:href="@{/posts/showNewPostsForm}" class="btn btn-primary btn-sm mb-3">Add Posts</a>
+    <a th:href="@{/posts/showNewPostsForm}" class="btn btn-primary btn-sm mb-3"
+       sec:authorize="isAuthenticated()" >Add Posts</a>
     <a th:href="@{'/posts/page/' + ${currentPage} + '?sortField=publishedAt&sortDir=' + ${reverseSortDir}}">
         Sort</a>
 
@@ -89,8 +91,11 @@
 
                 <td>
                     <a th:href="@{/posts/{id}(id=${posts.id})}" class="btn btn-primary"> View Post</a>
-                    <a th:href="@{/posts/showFormForUpdate/{id}(id=${posts.id})}" name ="${posts.author}" class="btn btn-primary">Update</a>
-                    <a th:href="@{/posts/deletePosts/{id}(id=${posts.id})}" class="btn btn-danger">Delete</a>
+                    <a th:href="@{/posts/showFormForUpdate/{id}(id=${posts.id})}"
+                       name ="${posts.author}" class="btn btn-primary"
+                       sec:authorize="isAuthenticated()">Update</a>
+                    <a th:href="@{/posts/deletePosts/{id}(id=${posts.id})}"
+                       class="btn btn-danger" sec:authorize="isAuthenticated()">Delete</a>
                 </td>
             </tr>
             </tbody>
