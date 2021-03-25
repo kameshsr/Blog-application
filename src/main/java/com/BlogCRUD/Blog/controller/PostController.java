@@ -1,13 +1,13 @@
-package com.BlogCRUD.Blog.controllers;
+package com.BlogCRUD.Blog.controller;
 
-import com.BlogCRUD.Blog.models.Comment;
-import com.BlogCRUD.Blog.models.Post;
-import com.BlogCRUD.Blog.models.Tag;
+import com.BlogCRUD.Blog.model.Comment;
+import com.BlogCRUD.Blog.model.Post;
+import com.BlogCRUD.Blog.model.Tag;
 import com.BlogCRUD.Blog.repository.CommentRepository;
 import com.BlogCRUD.Blog.repository.PostRepository;
 import com.BlogCRUD.Blog.repository.TagRepository;
 import com.BlogCRUD.Blog.repository.UserRepository;
-import com.BlogCRUD.Blog.services.PostService;
+import com.BlogCRUD.Blog.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
@@ -23,7 +23,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
-public class MainController {
+public class PostController {
 
     public String searchKeyword = null;
 
@@ -48,21 +48,6 @@ public class MainController {
     Optional<String> publishedDate;
 
     String startingDate, endingDate;
-
-    @GetMapping("/")
-    public String viewHomePage() {
-        return "index";
-    }
-
-    @GetMapping("/login")
-    public String login() {
-        return "Login";
-    }
-
-    @GetMapping("/access-denied")
-    public String showAccessDenied() {
-        return "AccessDenied";
-    }
 
     @GetMapping("/posts/list")
     public String viewPostsList(Model model, @Param("keyword") String keyword, @Param("author")

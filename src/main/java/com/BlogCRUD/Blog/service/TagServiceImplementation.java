@@ -1,6 +1,6 @@
-package com.BlogCRUD.Blog.services;
+package com.BlogCRUD.Blog.service;
 
-import com.BlogCRUD.Blog.models.Tag;
+import com.BlogCRUD.Blog.model.Tag;
 import com.BlogCRUD.Blog.repository.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

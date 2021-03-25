@@ -1,8 +1,8 @@
-package com.BlogCRUD.Blog.services;
+package com.BlogCRUD.Blog.service;
 
 import com.BlogCRUD.Blog.dto.UserRegistrationDto;
-import com.BlogCRUD.Blog.models.Role;
-import com.BlogCRUD.Blog.models.User;
+import com.BlogCRUD.Blog.model.Role;
+import com.BlogCRUD.Blog.model.User;
 import com.BlogCRUD.Blog.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

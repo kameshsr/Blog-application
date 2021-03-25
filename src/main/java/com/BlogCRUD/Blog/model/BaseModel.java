@@ -1,4 +1,4 @@
-package com.BlogCRUD.Blog.models;
+package com.BlogCRUD.Blog.model;
 
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;

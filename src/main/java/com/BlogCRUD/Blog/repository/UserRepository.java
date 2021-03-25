@@ -1,6 +1,6 @@
 package com.BlogCRUD.Blog.repository;
 
-import com.BlogCRUD.Blog.models.User;
+import com.BlogCRUD.Blog.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

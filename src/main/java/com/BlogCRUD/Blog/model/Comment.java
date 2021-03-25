@@ -1,4 +1,4 @@
-package com.BlogCRUD.Blog.models;
+package com.BlogCRUD.Blog.model;
 
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;

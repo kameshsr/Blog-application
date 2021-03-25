@@ -1,6 +1,6 @@
-package com.BlogCRUD.Blog.services;
+package com.BlogCRUD.Blog.service;
 
-import com.BlogCRUD.Blog.models.Tag;
+import com.BlogCRUD.Blog.model.Tag;
 
 import java.util.List;
 

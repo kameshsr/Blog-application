@@ -1,4 +1,4 @@
-package com.BlogCRUD.Blog.models;
+package com.BlogCRUD.Blog.model;
 
 import javax.persistence.*;
 

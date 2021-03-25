@@ -1,7 +1,7 @@
-package com.BlogCRUD.Blog.controllers;
+package com.BlogCRUD.Blog.controller;
 
 import com.BlogCRUD.Blog.dto.UserRegistrationDto;
-import com.BlogCRUD.Blog.services.UserService;
+import com.BlogCRUD.Blog.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;

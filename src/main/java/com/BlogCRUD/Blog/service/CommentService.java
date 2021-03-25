@@ -1,6 +1,6 @@
-package com.BlogCRUD.Blog.services;
+package com.BlogCRUD.Blog.service;
 
-import com.BlogCRUD.Blog.models.Comment;
+import com.BlogCRUD.Blog.model.Comment;
 
 import java.util.List;
 import java.util.Optional;

@@ -1,6 +1,6 @@
-package com.BlogCRUD.Blog.services;
+package com.BlogCRUD.Blog.service;
 
-import com.BlogCRUD.Blog.models.Post;
+import com.BlogCRUD.Blog.model.Post;
 import org.springframework.data.domain.Page;
 
 import java.util.List;

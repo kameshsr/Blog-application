@@ -1,8 +1,7 @@
-package com.BlogCRUD.Blog.models;
+package com.BlogCRUD.Blog.model;
 
 import javax.persistence.*;
 import java.util.Collection;
-import java.util.List;
 
 @Entity
 @Table(name = "user", uniqueConstraints = @UniqueConstraint(columnNames = "email"))

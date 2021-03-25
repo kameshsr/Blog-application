@@ -1,13 +1,12 @@
 package com.BlogCRUD.Blog.repository;
 
-import com.BlogCRUD.Blog.models.Post;
+import com.BlogCRUD.Blog.model.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Integer>{
@@ -31,8 +30,4 @@ public interface PostRepository extends JpaRepository<Post, Integer>{
     List<Post> findBytagIn(List<String> tag);
 
     List<Post> findBypublishedAt(LocalDateTime published_at);
-
-
-
-
 }
