@@ -1,6 +1,5 @@
 package com.BlogCRUD.Blog.controller;
 
-import com.BlogCRUD.Blog.model.Comment;
 import com.BlogCRUD.Blog.model.Post;
 import com.BlogCRUD.Blog.model.Tag;
 import com.BlogCRUD.Blog.repository.CommentRepository;
@@ -29,9 +28,6 @@ public class PostController {
 
     @Autowired
     private PostService postsService;
-
-    @Autowired
-    private UserRepository userRepository;
 
     @Autowired
     private CommentRepository commentRepository;
@@ -79,30 +75,11 @@ public class PostController {
         return "NewPosts";
     }
 
-    @GetMapping("/posts/addTag/{id}")
-    public String addTag(@PathVariable("id") int postId, Model model) {
-        model.addAttribute("tag", tagRepository.findAll());
-        model.addAttribute("posts", postsService.findOne(postId));
-        Tag tags = new Tag();
-        model.addAttribute("tags", tags);
-        return "AddPostTag";
-    }
-
     @GetMapping("/posts/{id}")
     public String viewPost(@PathVariable("id") int postId, Model model) {
         model.addAttribute("posts", postsService.getPostsById(postId));
         model.addAttribute("comments", commentRepository.findByPostId(postId));
         return "ViewPost";
-    }
-
-    @RequestMapping("/posts/addComment/{postsId}/comment")
-    public String addComments(@PathVariable("postsId") int postId, @ModelAttribute("newComment") Comment newComment) {
-        Post currentPosts = postsService.getPostsById(postId);
-        newComment.setPost(currentPosts);
-        commentRepository.save(newComment);
-        currentPosts.getComments().add(newComment);
-        postsService.savePosts(currentPosts);
-        return "redirect:/posts/{postsId}";
     }
 
     @PostMapping("/posts/savePosts")
@@ -118,14 +95,6 @@ public class PostController {
         }
         postsService.savePosts(posts);
         return "redirect:/posts/list";
-    }
-
-    @PostMapping("/posts/saveTag/{id}")
-    public String saveTags(@PathVariable("id") int postId, @ModelAttribute("tags") Tag tags) {
-        Post currentPosts = postsService.getPostsById(postId);
-        currentPosts.getTags().add(tags);
-        tagRepository.save(tags);
-        return "redirect:/posts/listUnPublishedPosts";
     }
 
     @GetMapping("/posts/showFormForUpdate/{id}")
@@ -198,30 +167,5 @@ public class PostController {
         }
         model.addAttribute("newPost", newPost);
         return "PostsList";
-    }
-
-    @RequestMapping(value = "posts/addComment/{id}", method = RequestMethod.GET)
-    public String addComment(@PathVariable("id") int postsId, Model model) {
-        model.addAttribute("comment", commentRepository.findAll());
-        Comment newComment = new Comment();
-        model.addAttribute("newComment", newComment);
-        model.addAttribute("posts", postsService.getPostsById(postsId));
-        return "AddComment";
-    }
-
-    @RequestMapping(value = "/posts/{postsId}/updateComments/{commentId}", method = RequestMethod.GET)
-    public String updateComment(@PathVariable("postsId") int postsId,
-                                @PathVariable("commentId") int commentId, Model model) {
-        model.addAttribute("posts", postsService.getPostsById(postsId));
-        model.addAttribute("newComment", commentRepository.findById(commentId));
-        return "AddComment";
-    }
-
-    @RequestMapping(value = "/posts/{postsId}/deleteComments/{commentId}", method = RequestMethod.GET)
-    public String deleteComment(@PathVariable("postsId") int postsId,
-                                @PathVariable("commentId") int commentId, Model model) {
-        Optional<Comment> comment = commentRepository.findById(commentId);
-        this.commentRepository.deleteById(commentId);
-        return "redirect:/posts/{postsId}";
     }
 }
