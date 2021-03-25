@@ -24,13 +24,18 @@
                 <span th:text="${newComments.email}"/><br>
                 <span th:text="${newComments.comment}"/><br>
 
-                <a th:href="@{/posts/{postsId}/updateComments/{commentId}(postsId=${posts.id},
+                <div th:unless="${#authentication.Principal} eq 'anonymousUser'">
+                        <div th:if="${#authentication.Principal.Username} eq 'admin@gmail.com'
+                        or ${#authentication.Principal.Username} eq ${posts.author}">
+                            <a th:href="@{/posts/{postsId}/updateComments/{commentId}(postsId=${posts.id},
                 commentId=${newComments.id})}" class="btn btn-primary" sec:authorize="isAuthenticated()">
                     Update Comment</a>
                 <br>
                 <a th:href="@{/posts/{postsId}/deleteComments/{commentId}(postsId=${posts.id},
                 commentId=${newComments.id})}" class="btn btn-primary" sec:authorize="isAuthenticated()">
                     Delete Comment</a>
+                        </div>
+                        </div>
                 <br>
 				</span>
             <a th:href="@{/posts/addComment/{postsId}(postsId=${posts.id})}" class="btn btn-success btn-xs">
