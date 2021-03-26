@@ -13,13 +13,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
+@RestController
 @Controller
 public class PostController {
 
@@ -45,10 +43,10 @@ public class PostController {
     String startingDate, endingDate;
 
     @GetMapping("/posts/list")
-    public String viewPostsList(Model model, @Param("keyword") String keyword, @Param("author")
+    public List<Post> viewPostsList(Model model, @Param("keyword") String keyword, @Param("author")
             Optional<String> author, @Param("tag") Optional<String> tag
             , @Param("content") Optional<String> content, @Param("startDate") String startDate, @Param("endDate") String endDate) {
-        System.out.println(startDate+" "+endDate);
+        /* System.out.println(startDate+" "+endDate);
         startingDate = startDate;
         endingDate = endDate;
         author1 = author;
@@ -58,7 +56,8 @@ public class PostController {
         List<Post> listPosts = postsService.listAll(keyword);
         model.addAttribute(("listPosts"), listPosts);
         model.addAttribute("tagList", tagRepository.findAll());
-        return findPaginated(1, "publishedAt", "asc", model);
+        return findPaginated(1, "publishedAt", "asc", model);*/
+        return postRepository.findAll();
     }
 
     @GetMapping("/listUnPublishedPosts")
@@ -75,10 +74,10 @@ public class PostController {
     }
 
     @GetMapping("/posts/{id}")
-    public String viewPost(@PathVariable("id") int postId, Model model) {
+    public Post viewPost(@PathVariable("id") int postId, Model model) {
         model.addAttribute("posts", postsService.getPostsById(postId));
         model.addAttribute("comments", commentRepository.findByPostId(postId));
-        return "ViewPost";
+        return postsService.getPostsById(postId);
     }
 
     @PostMapping("/posts/savePosts")
@@ -110,7 +109,7 @@ public class PostController {
     }
 
     @GetMapping("/posts/page/{pageNo}")
-    public String findPaginated(@PathVariable(value = "pageNo") int pageNo,
+    public List<Post> findPaginated(@PathVariable(value = "pageNo") int pageNo,
                                 @RequestParam("sortField") String sortField,
                                 @RequestParam("sortDir") String sortDir,
                                 Model model) {
@@ -133,7 +132,7 @@ public class PostController {
 
         model.addAttribute("listAuthor", listAuthor);
         model.addAttribute("listTag", postRepository.findByDistinctTag());
-
+/*
         if (searchKeyword != null) {
             listPost = postsService.listAll(searchKeyword);
             model.addAttribute("listPost1", listPost);
@@ -164,7 +163,7 @@ public class PostController {
             }
             model.addAttribute("listPost1", listPostFilter);
         }
-        model.addAttribute("newPost", newPost);
-        return "PostsList";
+        model.addAttribute("newPost", newPost);*/
+        return listPosts;
     }
 }
