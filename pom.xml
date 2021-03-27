@@ -111,6 +111,12 @@
 			<version>5.3.8.RELEASE</version>
 			<scope>test</scope>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.heroku.sdk/heroku-maven-plugin -->
+		<dependency>
+			<groupId>com.heroku.sdk</groupId>
+			<artifactId>heroku-maven-plugin</artifactId>
+			<version>3.0.4</version>
+		</dependency>
 
 	</dependencies>
 
@@ -123,5 +129,7 @@
 			</plugin>
 		</plugins>
 	</build>
+
+
 
 </project>
