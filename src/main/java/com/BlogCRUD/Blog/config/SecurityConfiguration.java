@@ -33,11 +33,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests().antMatchers(
                 "/registration**",
-                "/posts/list**",
-                "/posts/{id}**",
-                "/posts/page/{pageNo}**",
-                "/posts/addComment/{id}**",
-                "/posts/addComment/{postsId}/comment**",
+                "/posts/**",
+
                 "/resources/**",
                 "/js/**",
                 "/css/**",

@@ -18,7 +18,8 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@Controller
+@RequestMapping("/posts")
+
 public class PostController {
 
     public String searchKeyword = null;
@@ -42,7 +43,7 @@ public class PostController {
 
     String startingDate, endingDate;
 
-    @GetMapping("/posts/list")
+    @GetMapping("/list")
     public List<Post> viewPostsList(Model model, @Param("keyword") String keyword, @Param("author")
             Optional<String> author, @Param("tag") Optional<String> tag
             , @Param("content") Optional<String> content, @Param("startDate") String startDate, @Param("endDate") String endDate) {
@@ -66,21 +67,27 @@ public class PostController {
         return "UnPublishedPosts";
     }
 
-    @GetMapping("/posts/showNewPostsForm")
+    @GetMapping("/showNewPostsForm")
     public String showNewPostsForm(Model model) {
         Post posts = new Post();
         model.addAttribute("posts", posts);
         return "NewPosts";
     }
 
-    @GetMapping("/posts/{id}")
+    @PostMapping("/create")
+    public Post create(@RequestBody Post post){
+        System.out.println(post);
+        return this.postRepository.save(post);
+    }
+
+    @GetMapping("/{id}")
     public Post viewPost(@PathVariable("id") int postId, Model model) {
         model.addAttribute("posts", postsService.getPostsById(postId));
         model.addAttribute("comments", commentRepository.findByPostId(postId));
         return postsService.getPostsById(postId);
     }
 
-    @PostMapping("/posts/savePosts")
+    @PostMapping("/savePosts")
     public String savePosts(@ModelAttribute("posts") Post posts) {
 
         postsService.savePosts(posts);
@@ -95,20 +102,20 @@ public class PostController {
         return "redirect:/posts/list";
     }
 
-    @GetMapping("/posts/showFormForUpdate/{id}")
+    @GetMapping("/showFormForUpdate/{id}")
     public String showFormForUpdate(@PathVariable(value = "id") int id, Model model) {
         Post posts = postsService.getPostsById(id);
         model.addAttribute("posts", posts);
         return "UpdatePosts";
     }
 
-    @GetMapping("/posts/deletePosts/{id}")
+    @GetMapping("/deletePosts/{id}")
     public String deletePosts(@PathVariable(value = "id") int id) {
         this.postsService.deletePostsById(id);
         return "redirect:/posts/list";
     }
 
-    @GetMapping("/posts/page/{pageNo}")
+    @GetMapping("/page/{pageNo}")
     public List<Post> findPaginated(@PathVariable(value = "pageNo") int pageNo,
                                 @RequestParam("sortField") String sortField,
                                 @RequestParam("sortDir") String sortDir,

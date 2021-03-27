@@ -3,14 +3,11 @@ package com.BlogCRUD.Blog.controller;
 import com.BlogCRUD.Blog.dto.UserRegistrationDto;
 import com.BlogCRUD.Blog.service.UserService;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
 @RequestMapping("/registration")
-public class UserRegistrationController {
+class UserRegistrationController {
 
     private UserService userService;
 
