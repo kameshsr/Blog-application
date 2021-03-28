@@ -26,8 +26,7 @@ public class Post extends BaseModel {
     @Column(name = "excerpt")
     private String excerpt;
 
-    @Lob
-    @Column(name = "content", columnDefinition = "LONGTEXT")
+    @Column(length=10485760)
     private String content;
 
     @Column(name = "author")
@@ -37,7 +36,7 @@ public class Post extends BaseModel {
     @CreationTimestamp
     private LocalDateTime publishedAt;
 
-    @Column(nullable = false, columnDefinition = "TINYINT(1)")
+    @Column(name = "is_published")
     private boolean isPublished = true;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)

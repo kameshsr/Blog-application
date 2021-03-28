@@ -4,7 +4,10 @@ import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
-@Table(name = "user", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
+@Table(	name = "users",
+        uniqueConstraints = {
+        @UniqueConstraint(columnNames = "email")
+        })
 public class User {
 
     @Id
@@ -18,7 +21,7 @@ public class User {
 
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
     @JoinTable(
             name = "user_roles",
             joinColumns = @JoinColumn(

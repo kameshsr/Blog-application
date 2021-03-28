@@ -33,7 +33,7 @@ public class UserServiceImplementation implements UserService{
     public User save(UserRegistrationDto registrationDto) {
         User user = new User(registrationDto.getName(), registrationDto.getEmail(),
                 passwordEncoder.encode(registrationDto.getPassword()),
-                Arrays.asList(new Role("ROLE_USER")));
+                Arrays.asList(new Role("ROLE_ADMIN")));
 
         return userRepository.save(user);
     }
